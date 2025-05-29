@@ -812,29 +812,14 @@ def run_complete_analysis():
     before = pd.read_csv("/content/drive/MyDrive/2025-1학기 데이터과학 1조/Data/성남시 사회조사/최종 파일/redevelopment_before_2017_2019.csv")
     after = pd.read_csv("/content/drive/MyDrive/2025-1학기 데이터과학 1조/Data/성남시 사회조사/최종 파일/redevelopment_after_2023.csv")
     
-    # Filter for 65+ years old
-    before = before[before['만나이'] >= 65]
-    after = after[after['만나이'] >= 65]
-    
     print(f"Before redevelopment (65+): {len(before)} samples")
     print(f"After redevelopment (65+): {len(after)} samples")
-    
-    # Check for odd years only
-    if 'year' in before.columns:
-        odd_before = before[before['year'].isin([2017, 2019])].copy()
-        print(f"Before redevelopment (odd years only): {len(odd_before)} samples")
-        before = odd_before
-    
-    if 'year' in after.columns:
-        odd_after = after[after['year'].isin([2023])].copy()
-        print(f"After redevelopment (odd years only): {len(odd_after)} samples")
-        after = odd_after
     
     # Initialize analyzer
     analyzer = SeongnamOddYearAnalyzer(before, after)
     
     # Create save directory
-    save_dir = "seongnam_odd_years_results"
+    save_dir = "seongnam_regression_results"
     import os
     os.makedirs(save_dir, exist_ok=True)
     
