@@ -68,6 +68,8 @@ new_social23 = social23[['만나이',
 # 대중교통만족도 6(해당없음)->3(보통이다)
 cols = ['지하철만족도코드1_1', '택시만족도코드1_1', '기차만족도코드1_1', '시내버스만족도코드1_1', '시외버스만족도코드1_1']
 new_social23[cols] = new_social23[cols].replace(6, 3)
+# 소득구간 통일
+new_social23['월평균가구소득유형코드_1'] = new_social23['월평균가구소득유형코드_1'].map({1:1, 2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:7, 9:8, 10:8})
 
 # 1) 대중교통 만족도 평균 계산 및 불필요한 열 삭제
 new_social23['지하철만족도코드1_1'] = new_social23[['지하철만족도코드1_1', '택시만족도코드1_1', '기차만족도코드1_1', '시내버스만족도코드1_1', '시외버스만족도코드1_1']].mean(axis=1)
@@ -178,6 +180,10 @@ new_social17 = social17[[
     '45-1.보건시설이용만족도'
 ]].copy()
 
+# 대중교통만족도 6(해당없음)->3(보통이다)
+cols = ['19-1.대중교통만족여부_지하철', '19-2.대중교통만족여부_기차', '19-3.대중교통만족여부_택시', '19-4.대중교통만족여부_버스',]
+new_social17[cols] = new_social17[cols].replace(6, 3)
+
 # 1) 대중교통(지하철·기차·택시·버스) 만족도 평균
 new_social17['19-1.대중교통만족여부_지하철'] = new_social17[
     ['19-1.대중교통만족여부_지하철',
@@ -222,8 +228,6 @@ new_social17.columns = [
 ]
 
 # 대중교통 - 지하철·택시·기차·버스 만족도 코드에서 6을 3으로 치환
-cols = ['19-1.대중교통만족여부_지하철', '19-2.대중교통만족여부_기차', '19-3.대중교통만족여부_택시', '19-4.대중교통만족여부_버스',]
-new_social17[cols] = new_social17[cols].replace(6, 3)
 
 
 
@@ -262,7 +266,7 @@ print(social19.head())
 print("\nsocial research 2023")
 print(social23.head())
 
-"""
+
 new_social17 = new_social17[new_social17['만나이'] >= 65].dropna()
 new_social19 = new_social19[new_social19['만나이'] >= 65].dropna()
 new_social23 = new_social23[new_social23['만나이'] >= 65].dropna()
@@ -323,7 +327,7 @@ def merge_preprocessed_data(data_dict, save_path=None):
 
     return merged_data
 
-# 1. 재개발 이전 데이터 (17, 18, 19) 합치기
+# 1. 재개발 이전 데이터 (17, 19) 합치기
 redevelopment_before = {
     2017: new_social17,
     2019: new_social19
@@ -353,7 +357,7 @@ print("\n" + "="*60 + "\n")
 
 # 3. 데이터 기본 통계 확인
 def basic_statistics(data, data_name):
-    기본 통계 정보 출력
+    #기본 통계 정보 출력
     print(f"=== {data_name} 기본 통계 ===")
     print(f"전체 행 수: {len(data)}")
     print(f"컬럼 수: {len(data.columns)}")
@@ -391,5 +395,3 @@ else:
     print(f"\n⚠️ 컬럼 차이 발견:")
     print(f"이전에만 있음: {before_cols - after_cols}")
     print(f"이후에만 있음: {after_cols - before_cols}")
-
-"""
