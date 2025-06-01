@@ -78,20 +78,6 @@ Desktop.ini
 *.log
 logs/
 
-# ==================== 프로젝트별 결과물 (Results) ====================
-
-# Modeling/Classification 안에 생성되는 결과 디렉터리 무시
-*/Modeling/Classification/seongnam_classification_results/
-
-# Modeling/Ensemble 안에 생성되는 결과 디렉터리 무시
-*/Modeling/Ensemble/seongnam_ensemble_results/
-
-# Modeling/Regression 등에서 생성되는 기타 결과물 (예: confusion matrix, ROC 등)
-**/individual_model_metrics_*.png
-**/confusion_matrices_*.png
-**/roc_comparison_*.png
-**/feature_importance_*.png
-
 # ==================== 노트북 관련 ====================
 
 # Preprocessing 폴더 안에 생성되는 체크포인트 무시 (Jupyter)
