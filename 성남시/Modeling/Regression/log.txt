@@ -1,0 +1,162 @@
+🚀 Starting Regression Analysis: Original Features vs PCA Components
+Before redevelopment: 708 samples
+After redevelopment: 461 samples
+
+=== Before Redevelopment Regression Analysis ===
+Features: 9
+Sample size: 708
+
+--- Original Features (Standardized) ---
+  Ridge...
+    MSE: 0.4781 (±0.0437)
+    R²: 0.3163 (±0.0394)
+    Top 3 Important Features:
+      1. 거주지소속감: 0.3035
+      2. 삶의만족도: 0.2051
+      3. 지역거주기간: 0.1128
+  Lasso...
+    MSE: 0.5124 (±0.0370)
+    R²: 0.2665 (±0.0325)
+    Top 3 Important Features:
+      1. 거주지소속감: 0.2486
+      2. 삶의만족도: 0.1529
+      3. 월평균가구소득: 0.0234
+  ElasticNet...
+    MSE: 0.6168 (±0.0651)
+    R²: 0.1205 (±0.0071)
+    Top 3 Important Features:
+      1. 거주지소속감: 0.1045
+      2. 삶의만족도: 0.0349
+      3. 향후거주의향: 0.0000
+
+--- PCA Components ---
+  Ridge...
+    MSE: 0.4781 (±0.0437)
+    R²: 0.3163 (±0.0394)
+  Lasso...
+    MSE: 0.5183 (±0.0348)
+    R²: 0.2575 (±0.0390)
+  ElasticNet...
+    MSE: 0.6282 (±0.0557)
+    R²: 0.1026 (±0.0198)
+Regression equations saved: regression_results/regression_equations_Before_Redevelopment.txt
+
+=== After Redevelopment Regression Analysis ===
+Features: 9
+Sample size: 461
+
+--- Original Features (Standardized) ---
+  Ridge...
+    MSE: 0.7266 (±0.0577)
+    R²: 0.1857 (±0.0441)
+    Top 3 Important Features:
+      1. 삶의만족도: 0.2703
+      2. 월평균가구소득: 0.1657
+      3. 향후거주의향: 0.1649
+  Lasso...
+    MSE: 0.7714 (±0.0629)
+    R²: 0.1362 (±0.0336)
+    Top 3 Important Features:
+      1. 삶의만족도: 0.2336
+      2. 향후거주의향: 0.0843
+      3. 월평균가구소득: 0.0262
+  ElasticNet...
+    MSE: 0.8518 (±0.0666)
+    R²: 0.0467 (±0.0105)
+    Top 3 Important Features:
+      1. 삶의만족도: 0.0863
+      2. 향후거주의향: 0.0000
+      3. 지역거주기간: 0.0000
+
+--- PCA Components ---
+  Ridge...
+    MSE: 0.7266 (±0.0577)
+    R²: 0.1857 (±0.0441)
+  Lasso...
+    MSE: 0.7431 (±0.0566)
+    R²: 0.1675 (±0.0352)
+  ElasticNet...
+    MSE: 0.8624 (±0.0673)
+    R²: 0.0348 (±0.0069)
+Regression equations saved: regression_results/regression_equations_After_Redevelopment.txt
+
+Creating visualizations...
+  ✅ Performance comparison plotted
+  ✅ Feature importance plotted
+  ✅ Prediction scatter plotted
+
+All visualizations saved to regression_results folder!
+
+================================================================================
+REGRESSION ANALYSIS RESULTS
+================================================================================
+
+📊 Before Redevelopment
+============================================================
+📋 Data: 708 samples, 9 features, 9 PCA components
+
+🔍 Original Features (Standardized):
+Model           MSE        R²         Top Feature          Importance
+---------------------------------------------------------------------------
+Ridge           0.478      0.316      거주지소속감               0.304     
+Lasso           0.512      0.267      거주지소속감               0.249     
+ElasticNet      0.617      0.121      거주지소속감               0.104     
+
+🔍 PCA Components:
+Model           MSE        R²        
+----------------------------------------
+Ridge           0.478      0.316     
+Lasso           0.518      0.257     
+ElasticNet      0.628      0.103     
+
+🎯 Ridge Regression Feature Importance (Top 5):
+  1. 거주지소속감: 0.3035
+  2. 삶의만족도: 0.2051
+  3. 지역거주기간: 0.1128
+  4. 월평균가구소득: 0.1041
+  5. 정주의식: 0.0888
+
+📊 After Redevelopment
+============================================================
+📋 Data: 461 samples, 9 features, 8 PCA components
+
+🔍 Original Features (Standardized):
+Model           MSE        R²         Top Feature          Importance
+---------------------------------------------------------------------------
+Ridge           0.727      0.186      삶의만족도                0.270     
+Lasso           0.771      0.136      삶의만족도                0.234     
+ElasticNet      0.852      0.047      삶의만족도                0.086     
+
+🔍 PCA Components:
+Model           MSE        R²        
+----------------------------------------
+Ridge           0.727      0.186     
+Lasso           0.743      0.168     
+ElasticNet      0.862      0.035     
+
+🎯 Ridge Regression Feature Importance (Top 5):
+  1. 삶의만족도: 0.2703
+  2. 월평균가구소득: 0.1657
+  3. 향후거주의향: 0.1649
+  4. 만나이: 0.1333
+  5. 지역거주기간: 0.1075
+
+================================================================================
+✅ Regression Analysis Complete
+📈 Features sorted by importance (absolute coefficient values)
+================================================================================
+
+=== Regression Analysis Complete ===
+Results saved in 'regression_results' folder:
+- regression_equations_*.txt: Regression equations with sorted coefficients
+- performance_comparison.png: MSE and R² comparison
+- feature_importance_comparison.png: Feature importance sorted comparison
+- prediction_scatter.png: Actual vs Predicted scatter plots
+
+Models analyzed:
+1. Ridge, Lasso, ElasticNet with Original Features (standardized) and K-fold CV
+2. Ridge, Lasso, ElasticNet with PCA Components and K-fold CV
+
+Features:
+- All feature importance sorted by absolute coefficient values
+- Top 3 most important features displayed for each model

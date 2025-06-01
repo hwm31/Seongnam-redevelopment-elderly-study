@@ -1,75 +1,55 @@
-=== Before Redevelopment Multiple Regression Analysis Results (Odd Years Only) ===
+=== Before Redevelopment Multiple Regression Analysis Results ===
 
-Note: Analysis includes only odd years (2017, 2019, 2023)
-2023 Place_Attachment values were reversed during processing
-Settlement_Mindset mapping: 1,3→strong(4); 2,4→weak(1-2)
+All coefficients are sorted by importance (absolute value)
 
 
 === Before Redevelopment - Ridge Multiple Regression Equation ===
-Residence_Satisfaction = 2.4555 - 0.0764 × Age + 0.0975 × Residence_Period - 0.0832 × Future_Residence_Intent - 0.0630 × Settlement_Mindset - 0.3096 × Place_Attachment - 0.1049 × Monthly_Income + 0.0192 × Has_Debt - 0.2013 × Life_Satisfaction
+Residence_Satisfaction = 2.4555 - 0.0764 × Age + 0.1128 × Residence_Period + 0.0830 × Future_Residence_Intent + 0.0888 × Settlement_Mindset - 0.3035 × Place_Attachment - 0.1041 × Monthly_Income - 0.0207 × Has_Debt + 0.2051 × Life_Satisfaction + 0.0130 × year
 
---- Coefficient Interpretation ---
-1. Place_Attachment: -0.3096 (1 unit increase → residence satisfaction decreases)
-2. Life_Satisfaction: -0.2013 (1 unit increase → residence satisfaction decreases)
-3. Monthly_Income: -0.1049 (1 unit increase → residence satisfaction decreases)
-4. Residence_Period: 0.0975 (1 unit increase → residence satisfaction increases)
-5. Future_Residence_Intent: -0.0832 (1 unit increase → residence satisfaction decreases)
-
---- Feature Meanings (Odd Years Only) ---
-Age: age in years
-Residence_Period: years of residence
-Future_Residence_Intent: 1=strongly agree ~ 5=strongly disagree
-Settlement_Mindset: 1,3=strong attachment; 2,4=weak attachment (Note: 1,3→4 strong; 2,4→1-2 weak)
-Place_Attachment: 1=none ~ 4=very strong (Note: 2023 values were reversed during processing)
-Monthly_Income: 1=<100만원 ~ 8=700만원+
-Has_Debt: 1=yes, 2=no
-Life_Satisfaction: 1=very satisfied ~ 5=very dissatisfied
+--- Coefficient Interpretation (Sorted by Importance) ---
+1. Place_Attachment: -0.3035 (abs=0.3035) → 1 unit ↑ = residence satisfaction decreases
+2. Life_Satisfaction: 0.2051 (abs=0.2051) → 1 unit ↑ = residence satisfaction increases
+3. Residence_Period: 0.1128 (abs=0.1128) → 1 unit ↑ = residence satisfaction increases
+4. Monthly_Income: -0.1041 (abs=0.1041) → 1 unit ↑ = residence satisfaction decreases
+5. Settlement_Mindset: 0.0888 (abs=0.0888) → 1 unit ↑ = residence satisfaction increases
+6. Future_Residence_Intent: 0.0830 (abs=0.0830) → 1 unit ↑ = residence satisfaction increases
+7. Age: -0.0764 (abs=0.0764) → 1 unit ↑ = residence satisfaction decreases
+8. Has_Debt: -0.0207 (abs=0.0207) → 1 unit ↑ = residence satisfaction decreases
+9. year: 0.0130 (abs=0.0130) → 1 unit ↑ = residence satisfaction increases
 
 ============================================================
 
 
 === Before Redevelopment - Lasso Multiple Regression Equation ===
-Residence_Satisfaction = 2.4555 + -0.0000 × Age + 0.0000 × Residence_Period - 0.0098 × Future_Residence_Intent + -0.0000 × Settlement_Mindset - 0.2486 × Place_Attachment - 0.0234 × Monthly_Income + 0.0000 × Has_Debt - 0.1529 × Life_Satisfaction
+Residence_Satisfaction = 2.4555 + -0.0000 × Age + 0.0000 × Residence_Period + 0.0098 × Future_Residence_Intent + 0.0000 × Settlement_Mindset - 0.2486 × Place_Attachment - 0.0234 × Monthly_Income + -0.0000 × Has_Debt + 0.1529 × Life_Satisfaction + 0.0000 × year
 
---- Coefficient Interpretation ---
-1. Place_Attachment: -0.2486 (1 unit increase → residence satisfaction decreases)
-2. Life_Satisfaction: -0.1529 (1 unit increase → residence satisfaction decreases)
-3. Monthly_Income: -0.0234 (1 unit increase → residence satisfaction decreases)
-4. Future_Residence_Intent: -0.0098 (1 unit increase → residence satisfaction decreases)
-5. Residence_Period: 0.0000 (1 unit increase → residence satisfaction decreases)
-
---- Feature Meanings (Odd Years Only) ---
-Age: age in years
-Residence_Period: years of residence
-Future_Residence_Intent: 1=strongly agree ~ 5=strongly disagree
-Settlement_Mindset: 1,3=strong attachment; 2,4=weak attachment (Note: 1,3→4 strong; 2,4→1-2 weak)
-Place_Attachment: 1=none ~ 4=very strong (Note: 2023 values were reversed during processing)
-Monthly_Income: 1=<100만원 ~ 8=700만원+
-Has_Debt: 1=yes, 2=no
-Life_Satisfaction: 1=very satisfied ~ 5=very dissatisfied
+--- Coefficient Interpretation (Sorted by Importance) ---
+1. Place_Attachment: -0.2486 (abs=0.2486) → 1 unit ↑ = residence satisfaction decreases
+2. Life_Satisfaction: 0.1529 (abs=0.1529) → 1 unit ↑ = residence satisfaction increases
+3. Monthly_Income: -0.0234 (abs=0.0234) → 1 unit ↑ = residence satisfaction decreases
+4. Future_Residence_Intent: 0.0098 (abs=0.0098) → 1 unit ↑ = residence satisfaction increases
+5. Residence_Period: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+6. Settlement_Mindset: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+7. Has_Debt: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+8. Age: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+9. year: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
 
 ============================================================
 
 
 === Before Redevelopment - ElasticNet Multiple Regression Equation ===
-Residence_Satisfaction = 2.4555 + -0.0000 × Age + 0.0000 × Residence_Period + -0.0000 × Future_Residence_Intent + -0.0000 × Settlement_Mindset - 0.1045 × Place_Attachment + -0.0000 × Monthly_Income + 0.0000 × Has_Debt - 0.0349 × Life_Satisfaction
+Residence_Satisfaction = 2.4555 + -0.0000 × Age + 0.0000 × Residence_Period + 0.0000 × Future_Residence_Intent + 0.0000 × Settlement_Mindset - 0.1045 × Place_Attachment + -0.0000 × Monthly_Income + -0.0000 × Has_Debt + 0.0349 × Life_Satisfaction + 0.0000 × year
 
---- Coefficient Interpretation ---
-1. Place_Attachment: -0.1045 (1 unit increase → residence satisfaction decreases)
-2. Life_Satisfaction: -0.0349 (1 unit increase → residence satisfaction decreases)
-3. Future_Residence_Intent: -0.0000 (1 unit increase → residence satisfaction decreases)
-4. Residence_Period: 0.0000 (1 unit increase → residence satisfaction decreases)
-5. Settlement_Mindset: -0.0000 (1 unit increase → residence satisfaction decreases)
-
---- Feature Meanings (Odd Years Only) ---
-Age: age in years
-Residence_Period: years of residence
-Future_Residence_Intent: 1=strongly agree ~ 5=strongly disagree
-Settlement_Mindset: 1,3=strong attachment; 2,4=weak attachment (Note: 1,3→4 strong; 2,4→1-2 weak)
-Place_Attachment: 1=none ~ 4=very strong (Note: 2023 values were reversed during processing)
-Monthly_Income: 1=<100만원 ~ 8=700만원+
-Has_Debt: 1=yes, 2=no
-Life_Satisfaction: 1=very satisfied ~ 5=very dissatisfied
+--- Coefficient Interpretation (Sorted by Importance) ---
+1. Place_Attachment: -0.1045 (abs=0.1045) → 1 unit ↑ = residence satisfaction decreases
+2. Life_Satisfaction: 0.0349 (abs=0.0349) → 1 unit ↑ = residence satisfaction increases
+3. Future_Residence_Intent: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+4. Residence_Period: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+5. Settlement_Mindset: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+6. Monthly_Income: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+7. Has_Debt: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+8. Age: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+9. year: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
 
 ============================================================
 
