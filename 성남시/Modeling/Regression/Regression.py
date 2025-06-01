@@ -22,15 +22,16 @@ class SeongnamRegressionAnalyzer:
         
         # Feature information
         self.feature_info = {
-            '만나이': {'type': 'continuous', 'range': 'age in years'},
-            '지역거주기간': {'type': 'continuous', 'range': 'years of residence'},
-            '향후거주의향': {'type': 'likert', 'range': '1=strongly agree ~ 5=strongly disagree'},
-            '정주의식': {'type': 'special_categorical', 'range': '1,3=strong attachment; 2,4=weak attachment'},
-            '거주지소속감': {'type': 'likert', 'range': '1=none ~ 4=very strong'},
-            '거주지만족도': {'type': 'likert', 'range': '1=very satisfied ~ 5=very dissatisfied'},
-            '월평균가구소득': {'type': 'ordinal', 'range': '1=<100만원 ~ 8=700만원+'},
-            '부채유무': {'type': 'binary', 'range': '1=yes, 2=no'},
-            '삶의만족도': {'type': 'likert', 'range': '1=very satisfied ~ 5=very dissatisfied'}
+            '만나이': {'type': 'continuous', 'range': 'age in years', 'direction': 'context'},
+            '지역거주기간': {'type': 'continuous', 'range': 'years of residence', 'direction': 'positive'},
+            '향후거주의향': {'type': 'likert', 'range': '원래 1=강하게 동의~5=강하게 반대 → 변환후 5=거주의향 강함', 'direction': 'positive'},
+            '정주의식': {'type': 'special_categorical', 'range': '높을수록 정착의식 강함', 'mapping': {1: 4, 2: 2, 3: 4, 4: 1}, 'direction': 'positive'},
+            '거주지소속감': {'type': 'likert', 'range': '높을수록 소속감 강함', 'direction': 'positive'},
+            '주거만족도': {'type': 'likert', 'range': '원래 1=매우만족~5=매우불만족 → 변환후 5=만족도 높음', 'direction': 'positive'},
+            '월평균가구소득': {'type': 'ordinal', 'range': '1=<100만원 ~ 8=700만원+', 'direction': 'positive'},
+            '부채유무': {'type': 'binary', 'range': '원래 1=있음,2=없음 → 변환후 1=무부채(좋음), 0=유부채(나쁨)', 'direction': 'positive'},
+            '삶의만족도': {'type': 'likert', 'range': '원래 1=매우만족~5=매우불만족 → 변환후 5=만족도 높음', 'direction': 'positive'},
+            '대중교통만족도': {'type': 'continuous', 'range': '높을수록 대중교통 만족도 높음 (1~5 평균값)', 'direction': 'positive'}
         }
         
     def create_features(self, X):
@@ -83,12 +84,14 @@ class SeongnamRegressionAnalyzer:
         feature_mapping = {
             '만나이': 'Age',
             '지역거주기간': 'Residence_Period',
-            '향후거주의향': 'Future_Residence_Intent',
+            '향후거주의향': 'Future_Residence_Intent_Pos',
             '정주의식': 'Settlement_Mindset',
             '거주지소속감': 'Place_Attachment',
+            '주거만족도': 'Housing_Satisfaction',
             '월평균가구소득': 'Monthly_Income',
-            '부채유무': 'Has_Debt',
-            '삶의만족도': 'Life_Satisfaction'
+            '부채유무': 'Debt_Free',
+            '삶의만족도': 'Life_Satisfaction_Pos',
+            '대중교통만족도': 'Public_Transport_Satisfaction'
         }
         
         for i, (coef, feature) in enumerate(zip(coefficients, feature_names)):
@@ -387,12 +390,14 @@ class SeongnamRegressionAnalyzer:
         feature_mapping = {
             '만나이': 'Age',
             '지역거주기간': 'Residence_Period',
-            '향후거주의향': 'Future_Residence_Intent',
+            '향후거주의향': 'Future_Residence_Intent_Pos',
             '정주의식': 'Settlement_Mindset',
             '거주지소속감': 'Place_Attachment',
+            '주거만족도': 'Housing_Satisfaction',
             '월평균가구소득': 'Monthly_Income',
-            '부채유무': 'Has_Debt',
-            '삶의만족도': 'Life_Satisfaction'
+            '부채유무': 'Debt_Free',
+            '삶의만족도': 'Life_Satisfaction_Pos',
+            '대중교통만족도': 'Public_Transport_Satisfaction'
         }
         
         # Get sorted feature importance for Ridge model
@@ -585,7 +590,7 @@ def run_complete_ensemble_analysis():
     print(f"After redevelopment: {len(after)} samples")
     
     # Separate features and target
-    target_col = '거주지만족도'
+    target_col = '지역생활만족도'
     before_X = before.drop(target_col, axis=1)
     before_y = before[target_col]
     after_X = after.drop(target_col, axis=1)

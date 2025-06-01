@@ -52,33 +52,34 @@ class SeongnamEnsembleAnalyzer:
             '향후거주의향': {'type': 'likert', 'range': '원래 1=강하게 동의~5=강하게 반대 → 변환후 5=거주의향 강함', 'direction': 'positive'},
             '정주의식': {'type': 'special_categorical', 'range': '높을수록 정착의식 강함', 'mapping': {1: 4, 2: 2, 3: 4, 4: 1}, 'direction': 'positive'},
             '거주지소속감': {'type': 'likert', 'range': '높을수록 소속감 강함', 'direction': 'positive'},
-            '거주지만족도': {'type': 'likert', 'range': '원래 1=매우만족~5=매우불만족 → 변환후 5=만족도 높음', 'direction': 'positive'},
+            '주거만족도': {'type': 'likert', 'range': '원래 1=매우만족~5=매우불만족 → 변환후 5=만족도 높음', 'direction': 'positive'},
             '월평균가구소득': {'type': 'ordinal', 'range': '1=<100만원 ~ 8=700만원+', 'direction': 'positive'},
             '부채유무': {'type': 'binary', 'range': '원래 1=있음,2=없음 → 변환후 1=무부채(좋음), 0=유부채(나쁨)', 'direction': 'positive'},
-            '삶의만족도': {'type': 'likert', 'range': '원래 1=매우만족~5=매우불만족 → 변환후 5=만족도 높음', 'direction': 'positive'}
+            '삶의만족도': {'type': 'likert', 'range': '원래 1=매우만족~5=매우불만족 → 변환후 5=만족도 높음', 'direction': 'positive'},
+            '대중교통만족도': {'type': 'continuous', 'range': '높을수록 대중교통 만족도 높음 (1~5 평균값)', 'direction': 'positive'}
         }
 
     def create_elderly_friendliness_grades(self, data):
-        """Create elderly friendliness grades based on residence satisfaction - POSITIVE DIRECTION"""
-        satisfaction = data['거주지만족도'].copy()
-
-        # 거주지만족도를 높을수록 좋게 변환 (원래: 1=매우만족~5=매우불만족)
-        max_val = satisfaction.max()
-        satisfaction_positive = (max_val + 1) - satisfaction  # 5=매우만족, 1=매우불만족
-
+        """Create elderly friendliness grades based on regional life satisfaction"""
+        # First reverse transform: 1=very satisfied -> 5=very satisfied (higher = better)
+        satisfaction_raw = data['지역생활만족도'].copy()
+        max_val = satisfaction_raw.max()
+        satisfaction = (max_val + 1) - satisfaction_raw  # Reverse transform
+    
+        # Create grades based on quantiles of TRANSFORMED values
+        q33 = satisfaction.quantile(0.33)
+        q67 = satisfaction.quantile(0.67)
+    
         grades = []
-        q33 = satisfaction_positive.quantile(0.33)
-        q67 = satisfaction_positive.quantile(0.67)
-
-        for score in satisfaction_positive:
+        for score in satisfaction:
             if score <= q33:
-                grades.append('Low')  # 만족도 낮음 = 고령친화성 낮음
+                grades.append('Low')    # Low transformed score = Low satisfaction
             elif score <= q67:
                 grades.append('Medium')
             else:
-                grades.append('High')  # 만족도 높음 = 고령친화성 높음
-
-        return pd.Series(grades), satisfaction_positive
+                grades.append('High')   # High transformed score = High satisfaction
+            
+        return pd.Series(grades), satisfaction
 
     def balance_classes(self, X, y, method='none', verbose=True):
         """Balance classes using SMOTE or keep original distribution"""
@@ -107,11 +108,11 @@ class SeongnamEnsembleAnalyzer:
     def prepare_ensemble_data(self, data):
         """Data preparation for ensemble models"""
         if 'year' in data.columns:
-            odd_years = [2017, 2019, 2021, 2023]
+            odd_years = [2017, 2019, 2023]
             data = data[data['year'].isin(odd_years)].copy()
 
         y_grades, satisfaction_scores = self.create_elderly_friendliness_grades(data)
-        feature_cols = [col for col in data.columns if col not in ['거주지만족도', 'year'] and col in self.feature_info]
+        feature_cols = [col for col in data.columns if col not in ['지역생활만족도', 'year'] and col in self.feature_info]
         X = data[feature_cols].copy()
         X_processed = self.process_features(X, data)
 
@@ -139,7 +140,7 @@ class SeongnamEnsembleAnalyzer:
                             X_processed[col] = processed_col
                         else:
                             X_processed[col] = X[col]  # 원래 방향 유지
-                    elif col in ['향후거주의향', '거주지만족도', '삶의만족도']:
+                    elif col in ['향후거주의향', '주거만족도', '삶의만족도']:
                         # 만족도 관련 변수들을 높을수록 좋게 변환
                         max_val = X[col].max()
                         X_processed[col] = (max_val + 1) - X[col]
@@ -990,9 +991,11 @@ class SeongnamEnsembleAnalyzer:
             '향후거주의향': 'Future_Residence_Intent_Pos',
             '정주의식': 'Settlement_Mindset',
             '거주지소속감': 'Place_Attachment',
+            '주거만족도': 'Housing_Satisfaction',
             '월평균가구소득': 'Monthly_Income',
             '부채유무': 'Debt_Free',
-            '삶의만족도': 'Life_Satisfaction_Pos'
+            '삶의만족도': 'Life_Satisfaction_Pos',
+            '대중교통만족도': 'Public_Transport_Satisfaction'
         }
 
         # Create subplot for each model with feature importance
@@ -1271,9 +1274,11 @@ def print_ensemble_results(analyzer):
                                 '향후거주의향': 'Future_Residence_Intent_Pos',
                                 '정주의식': 'Settlement_Mindset',
                                 '거주지소속감': 'Place_Attachment',
+                                '주거만족도': 'Housing_Satisfaction',
                                 '월평균가구소득': 'Monthly_Income',
                                 '부채유무': 'Debt_Free',
-                                '삶의만족도': 'Life_Satisfaction_Pos'
+                                '삶의만족도': 'Life_Satisfaction_Pos',
+                                '대중교통만족도': 'Public_Transport_Satisfaction'
                             }
 
                             print(f"{'Feature':<25} {'Before':<10} {'After':<10} {'Change':<10} {'Status':<12}")
