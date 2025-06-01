@@ -1,0 +1,341 @@
+🚀 Starting Classification Analysis: Original vs SMOTE
+Before redevelopment: 708 samples
+After redevelopment: 461 samples
+
+--- NONE Method ---
+
+=== Before Redevelopment Classification Analysis (NONE) ===
+
+✅ All features processed to POSITIVE direction (higher = better):
+   - Future_Residence_Intent: Higher = Stronger residence intention
+   - Residence_Satisfaction: Higher = Higher residence satisfaction
+   - Life_Satisfaction: Higher = Higher life satisfaction
+   - Place_Attachment: Higher = Stronger place attachment
+   - Settlement_Mindset: Higher = Stronger settlement mindset
+   - Debt_Free: 1=No debt(good), 0=Has debt(bad)
+   - Age, Residence_Period, Monthly_Income: Original direction maintained
+Features: 8
+Sample size: 708
+
+Original class distribution:
+  Medium: 302
+  High: 297
+  Low: 109
+
+After Original Distribution:
+  Medium: 302
+  High: 297
+  Low: 109
+
+--- Original Features (Standardized) ---
+  DecisionTree...
+    Accuracy: 0.4548 (±0.0178)
+    Precision: 0.4111
+    Recall: 0.4111
+    F1-Score: 0.4111
+  KNN...
+    Accuracy: 0.5056 (±0.0249)
+    Precision: 0.4514
+    Recall: 0.4437
+    F1-Score: 0.4441
+
+--- PCA Components ---
+  DecisionTree...
+    Accuracy: 0.4647 (±0.0279)
+    Precision: 0.4179
+    Recall: 0.4169
+    F1-Score: 0.4173
+  KNN...
+    Accuracy: 0.5042 (±0.0267)
+    Precision: 0.4499
+    Recall: 0.4425
+    F1-Score: 0.4431
+
+=== After Redevelopment Classification Analysis (NONE) ===
+
+✅ All features processed to POSITIVE direction (higher = better):
+   - Future_Residence_Intent: Higher = Stronger residence intention
+   - Residence_Satisfaction: Higher = Higher residence satisfaction
+   - Life_Satisfaction: Higher = Higher life satisfaction
+   - Place_Attachment: Higher = Stronger place attachment
+   - Settlement_Mindset: Higher = Stronger settlement mindset
+   - Debt_Free: 1=No debt(good), 0=Has debt(bad)
+   - Age, Residence_Period, Monthly_Income: Original direction maintained
+Features: 8
+Sample size: 461
+
+Original class distribution:
+  High: 227
+  Medium: 176
+  Low: 58
+
+After Original Distribution:
+  High: 227
+  Medium: 176
+  Low: 58
+
+--- Original Features (Standardized) ---
+  DecisionTree...
+    Accuracy: 0.4900 (±0.0666)
+    Precision: 0.4038
+    Recall: 0.4014
+    F1-Score: 0.4000
+  KNN...
+    Accuracy: 0.5358 (±0.0306)
+    Precision: 0.4433
+    Recall: 0.4267
+    F1-Score: 0.4261
+
+--- PCA Components ---
+  DecisionTree...
+    Accuracy: 0.4881 (±0.0546)
+    Precision: 0.4035
+    Recall: 0.4004
+    F1-Score: 0.4006
+  KNN...
+    Accuracy: 0.5336 (±0.0300)
+    Precision: 0.4439
+    Recall: 0.4248
+    F1-Score: 0.4244
+
+--- SMOTE Method ---
+
+=== Before Redevelopment Classification Analysis (SMOTE) ===
+
+✅ All features processed to POSITIVE direction (higher = better):
+   - Future_Residence_Intent: Higher = Stronger residence intention
+   - Residence_Satisfaction: Higher = Higher residence satisfaction
+   - Life_Satisfaction: Higher = Higher life satisfaction
+   - Place_Attachment: Higher = Stronger place attachment
+   - Settlement_Mindset: Higher = Stronger settlement mindset
+   - Debt_Free: 1=No debt(good), 0=Has debt(bad)
+   - Age, Residence_Period, Monthly_Income: Original direction maintained
+Features: 8
+Sample size: 708
+
+Original class distribution:
+  Medium: 302
+  High: 297
+  Low: 109
+
+After SMOTE Oversampling:
+  Medium: 302
+  High: 302
+  Low: 302
+
+--- Original Features (Standardized) ---
+  DecisionTree...
+    Accuracy: 0.5883 (±0.0214)
+    Precision: 0.5955
+    Recall: 0.5883
+    F1-Score: 0.5904
+  KNN...
+    Accuracy: 0.5729 (±0.0210)
+    Precision: 0.5625
+    Recall: 0.5728
+    F1-Score: 0.5550
+
+--- PCA Components ---
+  DecisionTree...
+    Accuracy: 0.5398 (±0.0409)
+    Precision: 0.5370
+    Recall: 0.5397
+    F1-Score: 0.5381
+  KNN...
+    Accuracy: 0.5729 (±0.0234)
+    Precision: 0.5625
+    Recall: 0.5728
+    F1-Score: 0.5550
+
+=== After Redevelopment Classification Analysis (SMOTE) ===
+
+✅ All features processed to POSITIVE direction (higher = better):
+   - Future_Residence_Intent: Higher = Stronger residence intention
+   - Residence_Satisfaction: Higher = Higher residence satisfaction
+   - Life_Satisfaction: Higher = Higher life satisfaction
+   - Place_Attachment: Higher = Stronger place attachment
+   - Settlement_Mindset: Higher = Stronger settlement mindset
+   - Debt_Free: 1=No debt(good), 0=Has debt(bad)
+   - Age, Residence_Period, Monthly_Income: Original direction maintained
+Features: 8
+Sample size: 461
+
+Original class distribution:
+  High: 227
+  Medium: 176
+  Low: 58
+
+After SMOTE Oversampling:
+  Low: 227
+  Medium: 227
+  High: 227
+
+--- Original Features (Standardized) ---
+  DecisionTree...
+    Accuracy: 0.5829 (±0.0224)
+    Precision: 0.5863
+    Recall: 0.5830
+    F1-Score: 0.5839
+  KNN...
+    Accuracy: 0.6108 (±0.0355)
+    Precision: 0.6093
+    Recall: 0.6109
+    F1-Score: 0.6008
+
+--- PCA Components ---
+  DecisionTree...
+    Accuracy: 0.5315 (±0.0240)
+    Precision: 0.5307
+    Recall: 0.5316
+    F1-Score: 0.5283
+  KNN...
+    Accuracy: 0.6108 (±0.0355)
+    Precision: 0.6098
+    Recall: 0.6109
+    F1-Score: 0.6008
+
+Creating visualizations for SMOTE...
+  ✅ Performance comparison plotted
+  ✅ Confusion matrices plotted
+  ✅ Feature importance plotted
+  ✅ ROC comparison plotted
+
+Creating visualizations for NONE...
+  ✅ Performance comparison plotted
+  ✅ Confusion matrices plotted
+  ✅ Feature importance plotted
+  ✅ ROC comparison plotted
+
+================================================================================
+CLASSIFICATION ANALYSIS RESULTS: ORIGINAL vs SMOTE
+================================================================================
+Available result keys: ['Before Redevelopment_none', 'After Redevelopment_none', 'Before Redevelopment_smote', 'After Redevelopment_smote']
+
+================================================================================
+RESULTS FOR ORIGINAL
+================================================================================
+
+📊 Before Redevelopment
+============================================================
+📋 Data: 708 samples, 8 features, 8 PCA components
+
+🔍 Original Features (Standardized):
+Model           Accuracy   Precision  Recall     F1-Score  
+-----------------------------------------------------------------
+DecisionTree    0.455      0.411      0.411      0.411     
+KNN             0.506      0.451      0.444      0.444     
+
+🔍 PCA Components:
+Model           Accuracy   Precision  Recall     F1-Score  
+-----------------------------------------------------------------
+DecisionTree    0.465      0.418      0.417      0.417     
+KNN             0.504      0.450      0.443      0.443     
+
+🎯 Decision Tree Feature Importance (Top 5):
+  1. 만나이: 0.2476
+  2. 지역거주기간: 0.2081
+  3. 거주지소속감: 0.1594
+  4. 삶의만족도: 0.1520
+  5. 월평균가구소득: 0.1071
+
+📊 After Redevelopment
+============================================================
+📋 Data: 461 samples, 8 features, 8 PCA components
+
+🔍 Original Features (Standardized):
+Model           Accuracy   Precision  Recall     F1-Score  
+-----------------------------------------------------------------
+DecisionTree    0.490      0.404      0.401      0.400     
+KNN             0.536      0.443      0.427      0.426     
+
+🔍 PCA Components:
+Model           Accuracy   Precision  Recall     F1-Score  
+-----------------------------------------------------------------
+DecisionTree    0.488      0.403      0.400      0.401     
+KNN             0.534      0.444      0.425      0.424     
+
+🎯 Decision Tree Feature Importance (Top 5):
+  1. 지역거주기간: 0.2686
+  2. 만나이: 0.2294
+  3. 삶의만족도: 0.1486
+  4. 월평균가구소득: 0.1287
+  5. 향후거주의향: 0.0964
+
+================================================================================
+RESULTS FOR SMOTE
+================================================================================
+
+📊 Before Redevelopment
+============================================================
+📋 Data: 906 samples, 8 features, 8 PCA components
+
+🔍 Original Features (Standardized):
+Model           Accuracy   Precision  Recall     F1-Score  
+-----------------------------------------------------------------
+DecisionTree    0.588      0.596      0.588      0.590     
+KNN             0.573      0.562      0.573      0.555     
+
+🔍 PCA Components:
+Model           Accuracy   Precision  Recall     F1-Score  
+-----------------------------------------------------------------
+DecisionTree    0.540      0.537      0.540      0.538     
+KNN             0.573      0.562      0.573      0.555     
+
+🎯 Decision Tree Feature Importance (Top 5):
+  1. 만나이: 0.2223
+  2. 거주지소속감: 0.1921
+  3. 지역거주기간: 0.1853
+  4. 삶의만족도: 0.1835
+  5. 월평균가구소득: 0.0828
+
+📊 After Redevelopment
+============================================================
+📋 Data: 681 samples, 8 features, 8 PCA components
+
+🔍 Original Features (Standardized):
+Model           Accuracy   Precision  Recall     F1-Score  
+-----------------------------------------------------------------
+DecisionTree    0.583      0.586      0.583      0.584     
+KNN             0.611      0.609      0.611      0.601     
+
+🔍 PCA Components:
+Model           Accuracy   Precision  Recall     F1-Score  
+-----------------------------------------------------------------
+DecisionTree    0.532      0.531      0.532      0.528     
+KNN             0.611      0.610      0.611      0.601     
+
+🎯 Decision Tree Feature Importance (Top 5):
+  1. 삶의만족도: 0.2079
+  2. 만나이: 0.2023
+  3. 지역거주기간: 0.1735
+  4. 월평균가구소득: 0.1560
+  5. 향후거주의향: 0.1233
+
+================================================================================
+✅ Classification Analysis Complete
+📊 Target classes: High (높음) > Medium (중간) > Low (낮음)
+📈 Based on residence satisfaction (거주지만족도)
+================================================================================
+
+=== Classification Analysis Complete ===
+Results saved in 'classification_results' folder:
+- none/: Original distribution results
+- smote/: SMOTE balanced results
+
+Files generated:
+- performance_comparison_original.png: Original features performance
+- performance_comparison_pca.png: PCA components performance
+- confusion_matrices_*.png: Confusion matrices with per-class metrics
+- feature_importance.png: Decision Tree feature importance
+- roc_comparison.png: ROC curves comparison
+
+Models analyzed:
+1. Decision Tree Classifier with Original Features (standardized) and K-fold CV
+2. Decision Tree Classifier with PCA Components and K-fold CV
+3. KNN Classifier with Original Features (standardized) and K-fold CV
+4. KNN Classifier with PCA Components and K-fold CV
+
+Target classes:
+- High: High elderly-friendliness (based on satisfaction)
+- Medium: Medium elderly-friendliness
+- Low: Low elderly-friendliness
