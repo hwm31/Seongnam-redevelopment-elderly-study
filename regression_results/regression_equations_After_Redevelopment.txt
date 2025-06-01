@@ -1,0 +1,64 @@
+=== After Redevelopment Multiple Regression Analysis Results ===
+
+All coefficients are sorted by importance (absolute value)
+
+
+=== After Redevelopment - Ridge Multiple Regression Equation ===
+Residence_Satisfaction = 6.0672 - 0.1075 × Age + 0.1062 × Residence_Period - 0.1075 × Future_Residence_Intent_Pos - 0.0177 × Settlement_Mindset - 0.0435 × Place_Attachment - 0.0817 × Housing_Satisfaction - 0.1146 × Monthly_Income + 0.0479 × Debt_Free + 1.1265 × Life_Satisfaction_Pos - 0.0770 × Public_Transport_Satisfaction - 0.1586 × Park_Usage_Satisfaction + 0.0000 × year
+
+--- Coefficient Interpretation (Sorted by Importance) ---
+1. Life_Satisfaction_Pos: 1.1265 (abs=1.1265) → 1 unit ↑ = residence satisfaction increases
+2. Park_Usage_Satisfaction: -0.1586 (abs=0.1586) → 1 unit ↑ = residence satisfaction decreases
+3. Monthly_Income: -0.1146 (abs=0.1146) → 1 unit ↑ = residence satisfaction decreases
+4. Age: -0.1075 (abs=0.1075) → 1 unit ↑ = residence satisfaction decreases
+5. Future_Residence_Intent_Pos: -0.1075 (abs=0.1075) → 1 unit ↑ = residence satisfaction decreases
+6. Residence_Period: 0.1062 (abs=0.1062) → 1 unit ↑ = residence satisfaction increases
+7. Housing_Satisfaction: -0.0817 (abs=0.0817) → 1 unit ↑ = residence satisfaction decreases
+8. Public_Transport_Satisfaction: -0.0770 (abs=0.0770) → 1 unit ↑ = residence satisfaction decreases
+9. Debt_Free: 0.0479 (abs=0.0479) → 1 unit ↑ = residence satisfaction increases
+10. Place_Attachment: -0.0435 (abs=0.0435) → 1 unit ↑ = residence satisfaction decreases
+11. Settlement_Mindset: -0.0177 (abs=0.0177) → 1 unit ↑ = residence satisfaction decreases
+12. year: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+
+============================================================
+
+
+=== After Redevelopment - Lasso Multiple Regression Equation ===
+Residence_Satisfaction = 6.0672 + -0.0000 × Age + 0.0403 × Residence_Period - 0.0721 × Future_Residence_Intent_Pos + -0.0000 × Settlement_Mindset - 0.0122 × Place_Attachment - 0.0008 × Housing_Satisfaction + -0.0000 × Monthly_Income + 0.0000 × Debt_Free + 1.0762 × Life_Satisfaction_Pos - 0.0320 × Public_Transport_Satisfaction - 0.0839 × Park_Usage_Satisfaction + 0.0000 × year
+
+--- Coefficient Interpretation (Sorted by Importance) ---
+1. Life_Satisfaction_Pos: 1.0762 (abs=1.0762) → 1 unit ↑ = residence satisfaction increases
+2. Park_Usage_Satisfaction: -0.0839 (abs=0.0839) → 1 unit ↑ = residence satisfaction decreases
+3. Future_Residence_Intent_Pos: -0.0721 (abs=0.0721) → 1 unit ↑ = residence satisfaction decreases
+4. Residence_Period: 0.0403 (abs=0.0403) → 1 unit ↑ = residence satisfaction increases
+5. Public_Transport_Satisfaction: -0.0320 (abs=0.0320) → 1 unit ↑ = residence satisfaction decreases
+6. Place_Attachment: -0.0122 (abs=0.0122) → 1 unit ↑ = residence satisfaction decreases
+7. Housing_Satisfaction: -0.0008 (abs=0.0008) → 1 unit ↑ = residence satisfaction decreases
+8. Settlement_Mindset: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+9. Monthly_Income: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+10. Debt_Free: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+11. Age: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+12. year: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+
+============================================================
+
+
+=== After Redevelopment - ElasticNet Multiple Regression Equation ===
+Residence_Satisfaction = 6.0672 + -0.0000 × Age + 0.0000 × Residence_Period - 0.0295 × Future_Residence_Intent_Pos + -0.0000 × Settlement_Mindset + -0.0000 × Place_Attachment + -0.0000 × Housing_Satisfaction + -0.0000 × Monthly_Income + 0.0000 × Debt_Free + 0.7707 × Life_Satisfaction_Pos + -0.0000 × Public_Transport_Satisfaction + -0.0000 × Park_Usage_Satisfaction + 0.0000 × year
+
+--- Coefficient Interpretation (Sorted by Importance) ---
+1. Life_Satisfaction_Pos: 0.7707 (abs=0.7707) → 1 unit ↑ = residence satisfaction increases
+2. Future_Residence_Intent_Pos: -0.0295 (abs=0.0295) → 1 unit ↑ = residence satisfaction decreases
+3. Residence_Period: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+4. Housing_Satisfaction: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+5. Settlement_Mindset: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+6. Monthly_Income: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+7. Debt_Free: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+8. Age: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+9. Public_Transport_Satisfaction: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+10. Park_Usage_Satisfaction: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+11. Place_Attachment: -0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+12. year: 0.0000 (abs=0.0000) → 1 unit ↑ = residence satisfaction decreases
+
+============================================================
+

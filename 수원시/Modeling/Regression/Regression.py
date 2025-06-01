@@ -32,8 +32,7 @@ class SeongnamRegressionAnalyzer:
             '부채유무': {'type': 'binary', 'range': '원래 1=있음,2=없음 → 변환후 1=무부채(좋음), 0=유부채(나쁨)', 'direction': 'positive'},
             '삶의만족도': {'type': 'likert', 'range': '원래 1=매우만족~5=매우불만족 → 변환후 5=만족도 높음', 'direction': 'positive'},
             '대중교통만족도': {'type': 'continuous', 'range': '높을수록 대중교통 만족도 높음 (1~5 평균값)', 'direction': 'positive'},
-            '공공편의시설만족도': {'type': 'continuous', 'range': '높을수록 공원 및 도서관 만족도 높음 (1~5 평균값)', 'direction': 'positive'},
-            '의료시설만족도': {'type': 'continuous', 'range': '높을수록 의료기관 및 보건소 만족도 높음 (1~5 평균값)', 'direction': 'positive'}
+            '공원이용만족도': {'type': 'continuous', 'range': '높을수록 공원 만족도 높음 (1~5)', 'direction': 'positive'}
         }
         
     def create_features(self, X):
@@ -94,8 +93,7 @@ class SeongnamRegressionAnalyzer:
             '부채유무': 'Debt_Free',
             '삶의만족도': 'Life_Satisfaction_Pos',
             '대중교통만족도': 'Public_Transport_Satisfaction',
-            '공공편의시설만족도': 'Public_Convenience_Facility_Satisfaction',
-            '의료시설만족도': 'Medical_Facility_Satisfaction'
+            '공원이용만족도': 'Park_Usage_Satisfaction'
         }
         
         for i, (coef, feature) in enumerate(zip(coefficients, feature_names)):
@@ -402,8 +400,7 @@ class SeongnamRegressionAnalyzer:
             '부채유무': 'Debt_Free',
             '삶의만족도': 'Life_Satisfaction_Pos',
             '대중교통만족도': 'Public_Transport_Satisfaction',
-            '공공편의시설만족도': 'Public_Convenience_Facility_Satisfaction',
-            '의료시설만족도': 'Medical_Facility_Satisfaction'
+            '공원이용만족도': 'Park_Usage_Satisfaction'
         }
         
         # Get sorted feature importance for Ridge model
