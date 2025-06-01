@@ -1,0 +1,674 @@
+✅ XGBoost successfully imported!
+🚀 Starting Enhanced Ensemble Analysis: Original vs SMOTE Comparison
+📁 Make sure your Google Drive is mounted!
+Before redevelopment (65+): 708 samples
+After redevelopment (65+): 461 samples
+
+=== Comparing Original vs SMOTE Balanced Data ===
+📊 Models included: RandomForest, GradientBoosting, XGBoost, LogisticRegression, KNeighbors, DecisionTree, VotingEnsemble
+
+--- Testing Original Distribution ---
+
+=== Before Redevelopment Ensemble Analysis (NONE) ===
+
+✅ All features processed to POSITIVE direction (higher = better):
+   - Future_Residence_Intent: Higher = Stronger residence intention
+   - Residence_Satisfaction: Higher = Higher residence satisfaction
+   - Life_Satisfaction: Higher = Higher life satisfaction
+   - Place_Attachment: Higher = Stronger place attachment
+   - Settlement_Mindset: Higher = Stronger settlement mindset
+   - Debt_Free: 1=No debt(good), 0=Has debt(bad)
+   - Age, Residence_Period, Monthly_Income: Original direction maintained
+Features prepared: 8
+Original sample size: 708
+
+Original class distribution:
+  Medium: 302
+  Low: 268
+  High: 138
+
+After Original Distribution (No Balancing):
+  Medium: 302
+  Low: 268
+  High: 138
+
+Original class distribution:
+  Medium: 302
+  Low: 268
+  High: 138
+
+After Original Distribution (No Balancing):
+  Medium: 302
+  Low: 268
+  High: 138
+✅ XGBoost added to base tree models
+
+--- Step 1: Evaluating Base Models (Performance Filtering) ---
+  Evaluating RandomForest...
+    Accuracy: 0.5395 (±0.0333)
+  Evaluating GradientBoosting...
+    Accuracy: 0.5170 (±0.0150)
+  Evaluating XGBoost...
+    Accuracy: 0.5225 (±0.0371)
+
+--- Step 2: Performance Filtering Results ---
+✅ Qualified models (Accuracy >= 0.5):
+   - RandomForest: 0.5395
+   - GradientBoosting: 0.5170
+   - XGBoost: 0.5225
+   + Added LogisticRegression to ensemble: 0.5792
+   + Added KNeighbors to ensemble: 0.5014
+
+✅ VotingEnsemble created with 5 qualified models
+
+--- Original Features Ensemble Analysis ---
+Models to analyze: ['RandomForest', 'GradientBoosting', 'XGBoost', 'LogisticRegression', 'KNeighbors', 'VotingEnsemble']
+  Analyzing RandomForest...
+    Accuracy: 0.5395 (±0.0333)
+  Analyzing GradientBoosting...
+    Accuracy: 0.5170 (±0.0150)
+  Analyzing XGBoost...
+    Accuracy: 0.5225 (±0.0371)
+  Analyzing LogisticRegression...
+    Accuracy: 0.5792 (±0.0467)
+  Analyzing KNeighbors...
+    Accuracy: 0.5014 (±0.0249)
+  Analyzing VotingEnsemble...
+    Accuracy: 0.5367 (±0.0242)
+
+--- PCA Components Ensemble Analysis ---
+  Analyzing RandomForest...
+    Accuracy: 0.5579 (±0.0365)
+  Analyzing GradientBoosting...
+    Accuracy: 0.5453 (±0.0269)
+  Analyzing XGBoost...
+    Accuracy: 0.5495 (±0.0314)
+  Analyzing LogisticRegression...
+    Accuracy: 0.5792 (±0.0467)
+  Analyzing KNeighbors...
+    Accuracy: 0.5000 (±0.0265)
+  Analyzing VotingEnsemble...
+    Accuracy: 0.5664 (±0.0245)
+
+=== After Redevelopment Ensemble Analysis (NONE) ===
+
+✅ All features processed to POSITIVE direction (higher = better):
+   - Future_Residence_Intent: Higher = Stronger residence intention
+   - Residence_Satisfaction: Higher = Higher residence satisfaction
+   - Life_Satisfaction: Higher = Higher life satisfaction
+   - Place_Attachment: Higher = Stronger place attachment
+   - Settlement_Mindset: Higher = Stronger settlement mindset
+   - Debt_Free: 1=No debt(good), 0=Has debt(bad)
+   - Age, Residence_Period, Monthly_Income: Original direction maintained
+Features prepared: 8
+Original sample size: 461
+
+Original class distribution:
+  Low: 234
+  Medium: 145
+  High: 82
+
+After Original Distribution (No Balancing):
+  Low: 234
+  Medium: 145
+  High: 82
+
+Original class distribution:
+  Low: 234
+  Medium: 145
+  High: 82
+
+After Original Distribution (No Balancing):
+  Low: 234
+  Medium: 145
+  High: 82
+✅ XGBoost added to base tree models
+
+--- Step 1: Evaluating Base Models (Performance Filtering) ---
+  Evaluating RandomForest...
+    Accuracy: 0.5574 (±0.0355)
+  Evaluating GradientBoosting...
+    Accuracy: 0.5270 (±0.0517)
+  Evaluating XGBoost...
+    Accuracy: 0.5335 (±0.0339)
+
+--- Step 2: Performance Filtering Results ---
+✅ Qualified models (Accuracy >= 0.5):
+   - RandomForest: 0.5574
+   - GradientBoosting: 0.5270
+   - XGBoost: 0.5335
+   + Added LogisticRegression to ensemble: 0.5618
+   + Added KNeighbors to ensemble: 0.5595
+
+✅ VotingEnsemble created with 5 qualified models
+
+--- Original Features Ensemble Analysis ---
+Models to analyze: ['RandomForest', 'GradientBoosting', 'XGBoost', 'LogisticRegression', 'KNeighbors', 'VotingEnsemble']
+  Analyzing RandomForest...
+    Accuracy: 0.5574 (±0.0355)
+  Analyzing GradientBoosting...
+    Accuracy: 0.5270 (±0.0517)
+  Analyzing XGBoost...
+    Accuracy: 0.5335 (±0.0339)
+  Analyzing LogisticRegression...
+    Accuracy: 0.5618 (±0.0252)
+  Analyzing KNeighbors...
+    Accuracy: 0.5595 (±0.0433)
+  Analyzing VotingEnsemble...
+    Accuracy: 0.5617 (±0.0429)
+
+--- PCA Components Ensemble Analysis ---
+  Analyzing RandomForest...
+    Accuracy: 0.5661 (±0.0369)
+  Analyzing GradientBoosting...
+    Accuracy: 0.5228 (±0.0320)
+  Analyzing XGBoost...
+    Accuracy: 0.5423 (±0.0308)
+  Analyzing LogisticRegression...
+    Accuracy: 0.5618 (±0.0252)
+  Analyzing KNeighbors...
+    Accuracy: 0.5595 (±0.0433)
+  Analyzing VotingEnsemble...
+    Accuracy: 0.5618 (±0.0348)
+
+--- Testing SMOTE Balanced ---
+
+=== Before Redevelopment Ensemble Analysis (SMOTE) ===
+
+✅ All features processed to POSITIVE direction (higher = better):
+   - Future_Residence_Intent: Higher = Stronger residence intention
+   - Residence_Satisfaction: Higher = Higher residence satisfaction
+   - Life_Satisfaction: Higher = Higher life satisfaction
+   - Place_Attachment: Higher = Stronger place attachment
+   - Settlement_Mindset: Higher = Stronger settlement mindset
+   - Debt_Free: 1=No debt(good), 0=Has debt(bad)
+   - Age, Residence_Period, Monthly_Income: Original direction maintained
+Features prepared: 8
+Original sample size: 708
+
+Original class distribution:
+  Medium: 302
+  Low: 268
+  High: 138
+
+After SMOTE Oversampling:
+  Medium: 302
+  High: 302
+  Low: 302
+
+Original class distribution:
+  Medium: 302
+  Low: 268
+  High: 138
+
+After SMOTE Oversampling:
+  Medium: 302
+  High: 302
+  Low: 302
+✅ XGBoost added to base tree models
+
+--- Step 1: Evaluating Base Models (Performance Filtering) ---
+  Evaluating RandomForest...
+    Accuracy: 0.6126 (±0.0350)
+  Evaluating GradientBoosting...
+    Accuracy: 0.6137 (±0.0201)
+  Evaluating XGBoost...
+    Accuracy: 0.6181 (±0.0227)
+
+--- Step 2: Performance Filtering Results ---
+✅ Qualified models (Accuracy >= 0.5):
+   - RandomForest: 0.6126
+   - GradientBoosting: 0.6137
+   - XGBoost: 0.6181
+   + Added LogisticRegression to ensemble: 0.5618
+   + Added KNeighbors to ensemble: 0.6060
+   + Added DecisionTree to ensemble: 0.5298
+
+✅ VotingEnsemble created with 6 qualified models
+
+--- Original Features Ensemble Analysis ---
+Models to analyze: ['RandomForest', 'GradientBoosting', 'XGBoost', 'LogisticRegression', 'KNeighbors', 'DecisionTree', 'VotingEnsemble']
+  Analyzing RandomForest...
+    Accuracy: 0.6126 (±0.0350)
+  Analyzing GradientBoosting...
+    Accuracy: 0.6137 (±0.0201)
+  Analyzing XGBoost...
+    Accuracy: 0.6181 (±0.0227)
+  Analyzing LogisticRegression...
+    Accuracy: 0.5618 (±0.0356)
+  Analyzing KNeighbors...
+    Accuracy: 0.6060 (±0.0194)
+  Analyzing DecisionTree...
+    Accuracy: 0.5298 (±0.0309)
+  Analyzing VotingEnsemble...
+    Accuracy: 0.6258 (±0.0326)
+
+--- PCA Components Ensemble Analysis ---
+  Analyzing RandomForest...
+    Accuracy: 0.6314 (±0.0400)
+  Analyzing GradientBoosting...
+    Accuracy: 0.5894 (±0.0396)
+  Analyzing XGBoost...
+    Accuracy: 0.6225 (±0.0316)
+  Analyzing LogisticRegression...
+    Accuracy: 0.5618 (±0.0356)
+  Analyzing KNeighbors...
+    Accuracy: 0.6038 (±0.0197)
+  Analyzing DecisionTree...
+    Accuracy: 0.5552 (±0.0232)
+  Analyzing VotingEnsemble...
+    Accuracy: 0.6126 (±0.0337)
+
+=== After Redevelopment Ensemble Analysis (SMOTE) ===
+
+✅ All features processed to POSITIVE direction (higher = better):
+   - Future_Residence_Intent: Higher = Stronger residence intention
+   - Residence_Satisfaction: Higher = Higher residence satisfaction
+   - Life_Satisfaction: Higher = Higher life satisfaction
+   - Place_Attachment: Higher = Stronger place attachment
+   - Settlement_Mindset: Higher = Stronger settlement mindset
+   - Debt_Free: 1=No debt(good), 0=Has debt(bad)
+   - Age, Residence_Period, Monthly_Income: Original direction maintained
+Features prepared: 8
+Original sample size: 461
+
+Original class distribution:
+  Low: 234
+  Medium: 145
+  High: 82
+
+After SMOTE Oversampling:
+  Low: 234
+  Medium: 234
+  High: 234
+
+Original class distribution:
+  Low: 234
+  Medium: 145
+  High: 82
+
+After SMOTE Oversampling:
+  Low: 234
+  Medium: 234
+  High: 234
+✅ XGBoost added to base tree models
+
+--- Step 1: Evaluating Base Models (Performance Filtering) ---
+  Evaluating RandomForest...
+    Accuracy: 0.6936 (±0.0336)
+  Evaluating GradientBoosting...
+    Accuracy: 0.6651 (±0.0380)
+  Evaluating XGBoost...
+    Accuracy: 0.6823 (±0.0344)
+
+--- Step 2: Performance Filtering Results ---
+✅ Qualified models (Accuracy >= 0.5):
+   - RandomForest: 0.6936
+   - GradientBoosting: 0.6651
+   - XGBoost: 0.6823
+   + Added LogisticRegression to ensemble: 0.5027
+   + Added KNeighbors to ensemble: 0.6211
+   + Added DecisionTree to ensemble: 0.6124
+
+✅ VotingEnsemble created with 6 qualified models
+
+--- Original Features Ensemble Analysis ---
+Models to analyze: ['RandomForest', 'GradientBoosting', 'XGBoost', 'LogisticRegression', 'KNeighbors', 'DecisionTree', 'VotingEnsemble']
+  Analyzing RandomForest...
+    Accuracy: 0.6936 (±0.0336)
+  Analyzing GradientBoosting...
+    Accuracy: 0.6651 (±0.0380)
+  Analyzing XGBoost...
+    Accuracy: 0.6823 (±0.0344)
+  Analyzing LogisticRegression...
+    Accuracy: 0.5027 (±0.0388)
+  Analyzing KNeighbors...
+    Accuracy: 0.6211 (±0.0166)
+  Analyzing DecisionTree...
+    Accuracy: 0.6124 (±0.0302)
+  Analyzing VotingEnsemble...
+    Accuracy: 0.6751 (±0.0384)
+
+--- PCA Components Ensemble Analysis ---
+  Analyzing RandomForest...
+    Accuracy: 0.6823 (±0.0269)
+  Analyzing GradientBoosting...
+    Accuracy: 0.6452 (±0.0291)
+  Analyzing XGBoost...
+    Accuracy: 0.6823 (±0.0156)
+  Analyzing LogisticRegression...
+    Accuracy: 0.5027 (±0.0414)
+  Analyzing KNeighbors...
+    Accuracy: 0.6211 (±0.0147)
+  Analyzing DecisionTree...
+    Accuracy: 0.5912 (±0.0169)
+  Analyzing VotingEnsemble...
+    Accuracy: 0.6737 (±0.0243)
+
+Creating visualizations for NONE method...
+  ✅ Individual model metrics plotted
+  ✅ ROC comparison plotted
+  ✅ Confusion matrices plotted
+  ✅ Feature importance plotted
+
+Creating visualizations for SMOTE method...
+  ✅ Individual model metrics plotted
+  ✅ ROC comparison plotted
+  ✅ Confusion matrices plotted
+  ✅ Feature importance plotted
+
+All ensemble visualizations saved to seongnam_ensemble_results_original_vs_smote folder!
+
+====================================================================================================
+DETAILED ENSEMBLE ANALYSIS RESULTS: ORIGINAL vs SMOTE COMPARISON
+====================================================================================================
+
+====================================================================================================
+RESULTS FOR ORIGINAL DISTRIBUTION
+====================================================================================================
+
+📊 Before Redevelopment
+==========================================================================================
+📋 Data Information:
+  Balance Method: Original Distribution (No Balancing)
+  Original Samples: 708
+  Processed Samples: 708
+  Original Features: 8
+  PCA Components: 8 (explained variance: 1.000)
+  XGBoost Available: ✅ Yes
+
+🔍 Original Features Performance:
+Model                Accuracy   CV Acc     Precision  Recall     F1-Score   AUC       
+------------------------------------------------------------------------------------------
+RandomForest         0.540      0.539      0.556      0.504      0.517      0.701     
+GradientBoosting     0.517      0.517      0.507      0.493      0.499      0.673     
+XGBoost              0.523      0.523      0.517      0.496      0.504      0.700     
+LogisticRegression   0.579      0.579      0.591      0.542      0.555      0.730     
+KNeighbors           0.501      0.501      0.496      0.476      0.482      0.651     
+VotingEnsemble       0.537      0.537      0.534      0.506      0.515      0.707     
+
+🔍 PCA Components Performance:
+Model                Accuracy   CV Acc     Precision  Recall     F1-Score   AUC       
+------------------------------------------------------------------------------------------
+RandomForest         0.558      0.558      0.560      0.513      0.522      0.713     
+GradientBoosting     0.545      0.545      0.541      0.512      0.520      0.678     
+XGBoost              0.549      0.549      0.539      0.516      0.523      0.699     
+LogisticRegression   0.579      0.579      0.591      0.542      0.555      0.731     
+KNeighbors           0.500      0.500      0.495      0.475      0.480      0.651     
+VotingEnsemble       0.566      0.566      0.566      0.528      0.538      0.713     
+
+🏆 Best Performing Model: LogisticRegression (Accuracy: 0.579)
+
+📈 LogisticRegression Per-Class Metrics (Original Features):
+Class           Precision  Recall     F1-Score   Support 
+-------------------------------------------------------
+Low             0.625      0.604      0.615      268     
+Medium          0.540      0.652      0.591      302     
+High            0.607      0.370      0.459      138     
+
+📊 After Redevelopment
+==========================================================================================
+📋 Data Information:
+  Balance Method: Original Distribution (No Balancing)
+  Original Samples: 461
+  Processed Samples: 461
+  Original Features: 8
+  PCA Components: 8 (explained variance: 1.000)
+  XGBoost Available: ✅ Yes
+
+🔍 Original Features Performance:
+Model                Accuracy   CV Acc     Precision  Recall     F1-Score   AUC       
+------------------------------------------------------------------------------------------
+RandomForest         0.557      0.557      0.503      0.476      0.481      0.670     
+GradientBoosting     0.527      0.527      0.459      0.448      0.450      0.643     
+XGBoost              0.534      0.534      0.483      0.468      0.473      0.657     
+LogisticRegression   0.562      0.562      0.490      0.466      0.463      0.687     
+KNeighbors           0.560      0.560      0.507      0.482      0.484      0.661     
+VotingEnsemble       0.562      0.562      0.505      0.480      0.485      0.678     
+
+🔍 PCA Components Performance:
+Model                Accuracy   CV Acc     Precision  Recall     F1-Score   AUC       
+------------------------------------------------------------------------------------------
+RandomForest         0.566      0.566      0.530      0.475      0.482      0.678     
+GradientBoosting     0.523      0.523      0.469      0.450      0.454      0.647     
+XGBoost              0.542      0.542      0.509      0.467      0.476      0.657     
+LogisticRegression   0.562      0.562      0.490      0.466      0.463      0.687     
+KNeighbors           0.560      0.560      0.508      0.482      0.484      0.659     
+VotingEnsemble       0.562      0.562      0.537      0.483      0.494      0.680     
+
+🏆 Best Performing Model: LogisticRegression (Accuracy: 0.562)
+
+📈 LogisticRegression Per-Class Metrics (Original Features):
+Class           Precision  Recall     F1-Score   Support 
+-------------------------------------------------------
+Low             0.631      0.846      0.723      234     
+Medium          0.400      0.248      0.306      145     
+High            0.439      0.305      0.360      82      
+
+🎯 Feature Importance Comparison (ORIGINAL DISTRIBUTION):
+------------------------------------------------------------------------------------------
+
+📊 RandomForest Feature Importance:
+Feature                   Before     After      Change     Status      
+---------------------------------------------------------------------------
+Age                       0.208      0.221          +0.013 ↗️ Increased
+Residence_Period          0.220      0.233          +0.013 ↗️ Increased
+Future_Residence_Intent_Pos 0.083      0.100          +0.018 ↗️ Increased
+Settlement_Mindset        0.036      0.032          -0.005 Stable      
+Place_Attachment          0.159      0.084          -0.075 ↘️ Decreased
+Monthly_Income            0.122      0.149          +0.027 ↗️ Increased
+Debt_Free                 0.038      0.046          +0.008 Stable      
+Life_Satisfaction_Pos     0.135      0.136          +0.001 Stable      
+
+📊 GradientBoosting Feature Importance:
+Feature                   Before     After      Change     Status      
+---------------------------------------------------------------------------
+Age                       0.199      0.213          +0.014 ↗️ Increased
+Residence_Period          0.259      0.280          +0.021 ↗️ Increased
+Future_Residence_Intent_Pos 0.070      0.111          +0.041 ↗️ Increased
+Settlement_Mindset        0.031      0.028          -0.002 Stable      
+Place_Attachment          0.182      0.075          -0.108 ↘️ Decreased
+Monthly_Income            0.101      0.130          +0.029 ↗️ Increased
+Debt_Free                 0.029      0.036          +0.007 Stable      
+Life_Satisfaction_Pos     0.130      0.128          -0.002 Stable      
+
+📊 XGBoost Feature Importance:
+Feature                   Before     After      Change     Status      
+---------------------------------------------------------------------------
+Age                       0.092      0.110          +0.017 ↗️ Increased
+Residence_Period          0.096      0.112          +0.016 ↗️ Increased
+Future_Residence_Intent_Pos 0.095      0.148          +0.053 ↗️ Increased
+Settlement_Mindset        0.111      0.103          -0.008 Stable      
+Place_Attachment          0.281      0.124          -0.157 ↘️ Decreased
+Monthly_Income            0.098      0.112          +0.014 ↗️ Increased
+Debt_Free                 0.089      0.107          +0.018 ↗️ Increased
+Life_Satisfaction_Pos     0.137      0.183          +0.047 ↗️ Increased
+
+====================================================================================================
+RESULTS FOR SMOTE BALANCED
+====================================================================================================
+
+📊 Before Redevelopment
+==========================================================================================
+📋 Data Information:
+  Balance Method: SMOTE Oversampling
+  Original Samples: 708
+  Processed Samples: 906
+  Original Features: 8
+  PCA Components: 8 (explained variance: 1.000)
+  XGBoost Available: ✅ Yes
+
+🔍 Original Features Performance:
+Model                Accuracy   CV Acc     Precision  Recall     F1-Score   AUC       
+------------------------------------------------------------------------------------------
+RandomForest         0.613      0.613      0.615      0.613      0.614      0.803     
+GradientBoosting     0.614      0.614      0.617      0.614      0.615      0.789     
+XGBoost              0.618      0.618      0.620      0.618      0.619      0.804     
+LogisticRegression   0.562      0.562      0.555      0.562      0.558      0.753     
+KNeighbors           0.606      0.606      0.592      0.606      0.589      0.764     
+DecisionTree         0.530      0.530      0.526      0.530      0.527      0.695     
+VotingEnsemble       0.626      0.626      0.623      0.626      0.624      0.807     
+
+🔍 PCA Components Performance:
+Model                Accuracy   CV Acc     Precision  Recall     F1-Score   AUC       
+------------------------------------------------------------------------------------------
+RandomForest         0.631      0.631      0.625      0.631      0.627      0.806     
+GradientBoosting     0.589      0.589      0.586      0.589      0.587      0.769     
+XGBoost              0.623      0.623      0.617      0.623      0.619      0.796     
+LogisticRegression   0.562      0.562      0.555      0.562      0.558      0.753     
+KNeighbors           0.604      0.604      0.589      0.604      0.586      0.762     
+DecisionTree         0.555      0.555      0.547      0.555      0.550      0.683     
+VotingEnsemble       0.613      0.613      0.604      0.613      0.607      0.796     
+
+🏆 Best Performing Model: VotingEnsemble (Accuracy: 0.626)
+
+📈 VotingEnsemble Per-Class Metrics (Original Features):
+Class           Precision  Recall     F1-Score   Support 
+-------------------------------------------------------
+Low             0.625      0.623      0.624      302     
+Medium          0.502      0.487      0.494      302     
+High            0.744      0.768      0.756      302     
+
+📊 After Redevelopment
+==========================================================================================
+📋 Data Information:
+  Balance Method: SMOTE Oversampling
+  Original Samples: 461
+  Processed Samples: 702
+  Original Features: 8
+  PCA Components: 8 (explained variance: 1.000)
+  XGBoost Available: ✅ Yes
+
+🔍 Original Features Performance:
+Model                Accuracy   CV Acc     Precision  Recall     F1-Score   AUC       
+------------------------------------------------------------------------------------------
+RandomForest         0.694      0.694      0.697      0.694      0.695      0.853     
+GradientBoosting     0.665      0.665      0.663      0.665      0.664      0.833     
+XGBoost              0.682      0.682      0.683      0.682      0.682      0.841     
+LogisticRegression   0.503      0.503      0.489      0.503      0.491      0.697     
+KNeighbors           0.621      0.621      0.611      0.621      0.610      0.800     
+DecisionTree         0.613      0.612      0.614      0.613      0.612      0.722     
+VotingEnsemble       0.675      0.675      0.676      0.675      0.675      0.848     
+
+🔍 PCA Components Performance:
+Model                Accuracy   CV Acc     Precision  Recall     F1-Score   AUC       
+------------------------------------------------------------------------------------------
+RandomForest         0.682      0.682      0.682      0.682      0.682      0.850     
+GradientBoosting     0.645      0.645      0.645      0.645      0.645      0.818     
+XGBoost              0.682      0.682      0.681      0.682      0.681      0.840     
+LogisticRegression   0.503      0.503      0.490      0.503      0.491      0.697     
+KNeighbors           0.621      0.621      0.612      0.621      0.610      0.800     
+DecisionTree         0.591      0.591      0.587      0.591      0.589      0.703     
+VotingEnsemble       0.674      0.674      0.672      0.674      0.672      0.842     
+
+🏆 Best Performing Model: RandomForest (Accuracy: 0.694)
+
+📈 RandomForest Per-Class Metrics (Original Features):
+Class           Precision  Recall     F1-Score   Support 
+-------------------------------------------------------
+Low             0.641      0.688      0.664      234     
+Medium          0.639      0.628      0.634      234     
+High            0.810      0.765      0.787      234     
+
+🎯 Feature Importance Comparison (SMOTE BALANCED):
+------------------------------------------------------------------------------------------
+
+📊 RandomForest Feature Importance:
+Feature                   Before     After      Change     Status      
+---------------------------------------------------------------------------
+Age                       0.169      0.181          +0.012 ↗️ Increased
+Residence_Period          0.177      0.193          +0.016 ↗️ Increased
+Future_Residence_Intent_Pos 0.113      0.134          +0.021 ↗️ Increased
+Settlement_Mindset        0.042      0.029          -0.013 ↘️ Decreased
+Place_Attachment          0.188      0.103          -0.085 ↘️ Decreased
+Monthly_Income            0.131      0.145          +0.014 ↗️ Increased
+Debt_Free                 0.034      0.046          +0.012 ↗️ Increased
+Life_Satisfaction_Pos     0.146      0.169          +0.023 ↗️ Increased
+
+📊 GradientBoosting Feature Importance:
+Feature                   Before     After      Change     Status      
+---------------------------------------------------------------------------
+Age                       0.172      0.186          +0.014 ↗️ Increased
+Residence_Period          0.204      0.196          -0.007 Stable      
+Future_Residence_Intent_Pos 0.085      0.138          +0.053 ↗️ Increased
+Settlement_Mindset        0.030      0.032          +0.003 Stable      
+Place_Attachment          0.241      0.092          -0.149 ↘️ Decreased
+Monthly_Income            0.111      0.133          +0.023 ↗️ Increased
+Debt_Free                 0.023      0.033          +0.011 ↗️ Increased
+Life_Satisfaction_Pos     0.135      0.189          +0.054 ↗️ Increased
+
+📊 XGBoost Feature Importance:
+Feature                   Before     After      Change     Status      
+---------------------------------------------------------------------------
+Age                       0.081      0.093          +0.013 ↗️ Increased
+Residence_Period          0.086      0.094          +0.008 Stable      
+Future_Residence_Intent_Pos 0.103      0.167          +0.064 ↗️ Increased
+Settlement_Mindset        0.109      0.116          +0.008 Stable      
+Place_Attachment          0.315      0.130          -0.184 ↘️ Decreased
+Monthly_Income            0.100      0.109          +0.009 Stable      
+Debt_Free                 0.076      0.093          +0.016 ↗️ Increased
+Life_Satisfaction_Pos     0.131      0.197          +0.066 ↗️ Increased
+
+====================================================================================================
+✅ Enhanced Analysis Complete - Original vs SMOTE Comparison
+🚀 XGBoost successfully integrated into ensemble analysis
+📊 Comparison shows impact of SMOTE balancing on model performance
+🎯 Performance filtering ensures only reliable models (Accuracy >= 0.5) in ensemble
+====================================================================================================
+
+=== Enhanced Ensemble Analysis Complete ===
+Results saved in 'seongnam_ensemble_results_original_vs_smote' folder with subfolders for each method:
+- none/: Original distribution results
+- smote/: SMOTE balanced results
+
+Each subfolder contains:
+- individual_model_metrics_*.png: Individual model performance charts
+- roc_comparison_*.png: ROC comparison across periods
+- confusion_matrices_*.png: Confusion matrices with per-class metrics
+- feature_importance_*.png: Feature importance comparison
+
+Enhanced Ensemble Models Analyzed (in logical order):
+🌳 Tree-based Models:
+- Random Forest (Original & PCA)
+- Gradient Boosting (Original & PCA)
+- XGBoost (Original & PCA) ✅
+
+📊 Additional Base Models:
+- Logistic Regression (Original & PCA)
+- K-Nearest Neighbors (Original & PCA)
+- Decision Tree (Original & PCA)
+
+🏆 Final Ensemble:
+- Voting Ensemble: RandomForest + GradientBoosting + XGBoost + LogisticRegression + KNN (qualified models only) (Original & PCA)
+
+Key Features:
+- 🔄 ALL FEATURES CONVERTED TO POSITIVE DIRECTION (higher = better)
+- 📊 Original vs SMOTE comparison (no manual sampling)
+- 🎯 Performance filtering: Only models with Accuracy >= 0.5 in ensemble
+- Enhanced model set with XGBoost integration
+- Detailed metrics: Accuracy, Precision, Recall, F1-Score, AUC
+- ROC curves with before/after comparison
+- Per-class performance analysis
+- Feature importance comparison across all tree-based models
+- Cross-validation with 5-fold CV
+- Automatic model availability detection
+- English-only labels for clean visualization
+- Error handling for robust analysis
+
+📊 Feature Interpretation Guide (All Positive Direction):
+- Future_Residence_Intent_Pos: Higher = Stronger residence intention
+- Residence_Satisfaction: Higher = Higher residence satisfaction
+- Life_Satisfaction_Pos: Higher = Higher life satisfaction
+- Place_Attachment: Higher = Stronger place attachment
+- Settlement_Mindset: Higher = Stronger settlement mindset
+- Debt_Free: 1=No debt(good), 0=Has debt(bad)
+- Residence_Period: Higher = Longer residence
+- Monthly_Income: Higher = Higher income
+- Age: Context dependent
+
+🎯 Target Variable: Low < Medium < High (Elderly-Friendliness Grade)
+- Low: Low elderly-friendliness
+- Medium: Medium elderly-friendliness
+- High: High elderly-friendliness
+
+🔧 Performance Filtering: Only models with Accuracy >= 0.5 included in ensemble
