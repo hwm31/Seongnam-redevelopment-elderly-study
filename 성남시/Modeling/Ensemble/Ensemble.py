@@ -1,3 +1,4 @@
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -60,11 +61,11 @@ class SeongnamEnsembleAnalyzer:
     def create_elderly_friendliness_grades(self, data):
         """Create elderly friendliness grades based on residence satisfaction - POSITIVE DIRECTION"""
         satisfaction = data['거주지만족도'].copy()
-        
+
         # 거주지만족도를 높을수록 좋게 변환 (원래: 1=매우만족~5=매우불만족)
         max_val = satisfaction.max()
         satisfaction_positive = (max_val + 1) - satisfaction  # 5=매우만족, 1=매우불만족
-        
+
         grades = []
         q33 = satisfaction_positive.quantile(0.33)
         q67 = satisfaction_positive.quantile(0.67)
@@ -79,13 +80,14 @@ class SeongnamEnsembleAnalyzer:
 
         return pd.Series(grades), satisfaction_positive
 
-    def balance_classes(self, X, y, method='none'):
+    def balance_classes(self, X, y, method='none', verbose=True):
         """Balance classes using SMOTE or keep original distribution"""
-        print(f"\nOriginal class distribution:")
-        original_counts = pd.Series(y).value_counts()
-        for cls, count in original_counts.items():
-            print(f"  {cls}: {count}")
-        
+        if verbose:
+            print(f"\nOriginal class distribution:")
+            original_counts = pd.Series(y).value_counts()
+            for cls, count in original_counts.items():
+                print(f"  {cls}: {count}")
+
         if method == 'smote':
             smote = SMOTE(random_state=42)
             X_balanced, y_balanced = smote.fit_resample(X, y)
@@ -93,12 +95,13 @@ class SeongnamEnsembleAnalyzer:
         else:
             X_balanced, y_balanced = X, y
             method_name = "Original Distribution (No Balancing)"
-        
-        print(f"\nAfter {method_name}:")
-        balanced_counts = pd.Series(y_balanced).value_counts()
-        for cls, count in balanced_counts.items():
-            print(f"  {cls}: {count}")
-            
+
+        if verbose:
+            print(f"\nAfter {method_name}:")
+            balanced_counts = pd.Series(y_balanced).value_counts()
+            for cls, count in balanced_counts.items():
+                print(f"  {cls}: {count}")
+
         return X_balanced, y_balanced, method_name
 
     def prepare_ensemble_data(self, data):
@@ -142,14 +145,14 @@ class SeongnamEnsembleAnalyzer:
                         X_processed[col] = (max_val + 1) - X[col]
                     else:
                         X_processed[col] = X[col]
-                        
+
                 elif feature_type == 'binary':
                     if col == '부채유무':
                         # 부채유무: 1=있음, 2=없음 → 1=없음(좋음), 0=있음(나쁨)으로 변환
                         X_processed[col] = (X[col] == 2).astype(int)  # 2(없음)→1, 1(있음)→0
                     else:
                         X_processed[col] = (X[col] == 1).astype(int)
-                        
+
                 elif feature_type == 'special_categorical':
                     if col == '정주의식':
                         # 정주의식 매핑은 이미 높을수록 좋게 설정되어 있음
@@ -157,13 +160,13 @@ class SeongnamEnsembleAnalyzer:
                         X_processed[col] = X[col].map(mapping).fillna(X[col])
                     else:
                         X_processed[col] = pd.to_numeric(X[col], errors='coerce')
-                        
+
                 elif feature_type in ['ordinal', 'continuous']:
                     # 연속형/순서형 변수는 원래 방향 유지 (이미 높을수록 좋음)
                     X_processed[col] = pd.to_numeric(X[col], errors='coerce')
 
         X_processed = X_processed.fillna(X_processed.median())
-        
+
         print(f"\n✅ All features processed to POSITIVE direction (higher = better):")
         print(f"   - Future_Residence_Intent: Higher = Stronger residence intention")
         print(f"   - Residence_Satisfaction: Higher = Higher residence satisfaction")
@@ -172,7 +175,7 @@ class SeongnamEnsembleAnalyzer:
         print(f"   - Settlement_Mindset: Higher = Stronger settlement mindset")
         print(f"   - Debt_Free: 1=No debt(good), 0=Has debt(bad)")
         print(f"   - Age, Residence_Period, Monthly_Income: Original direction maintained")
-        
+
         return X_processed
 
     def create_ensemble_features(self, X):
@@ -197,16 +200,16 @@ class SeongnamEnsembleAnalyzer:
         precision_weighted = precision_score(y_true, y_pred, average='weighted', zero_division=0)
         recall_weighted = recall_score(y_true, y_pred, average='weighted', zero_division=0)
         f1_weighted = f1_score(y_true, y_pred, average='weighted', zero_division=0)
-        
+
         precision_per_class, recall_per_class, f1_per_class, support_per_class = precision_recall_fscore_support(
             y_true, y_pred, average=None, labels=['Low', 'Medium', 'High'], zero_division=0)
-        
+
         cm = confusion_matrix(y_true, y_pred, labels=['Low', 'Medium', 'High'])
-        
+
         roc_auc_results = None
         if y_pred_proba is not None:
             roc_auc_results = self.calculate_roc_auc(y_true, y_pred_proba)
-        
+
         return {
             'accuracy': accuracy,
             'precision_macro': precision_macro,
@@ -227,14 +230,14 @@ class SeongnamEnsembleAnalyzer:
         """Calculate ROC curves and AUC scores for multiclass classification"""
         classes = ['Low', 'Medium', 'High']
         n_classes = len(classes)
-        
+
         try:
             label_binarizer = LabelBinarizer()
             y_true_binary = label_binarizer.fit_transform(y_true)
-            
+
             if y_true_binary.shape[1] == 1:
                 y_true_binary = np.column_stack([1 - y_true_binary, y_true_binary])
-            
+
             if y_pred_proba.shape[1] != y_true_binary.shape[1]:
                 # 클래스 수 맞춤
                 n_pred_classes = y_pred_proba.shape[1]
@@ -250,28 +253,28 @@ class SeongnamEnsembleAnalyzer:
                         else:  # High
                             y_true_binary_adjusted[i, 2] = 1
                     y_true_binary = y_true_binary_adjusted
-            
+
             fpr = {}
             tpr = {}
             roc_auc = {}
-            
+
             for i in range(min(n_classes, y_true_binary.shape[1], y_pred_proba.shape[1])):
                 fpr[i], tpr[i], _ = roc_curve(y_true_binary[:, i], y_pred_proba[:, i])
                 roc_auc[i] = auc(fpr[i], tpr[i])
-            
+
             # Macro average
             all_fpr = np.unique(np.concatenate([fpr[i] for i in range(min(n_classes, len(fpr)))]))
             mean_tpr = np.zeros_like(all_fpr)
-            
+
             for i in range(min(n_classes, len(fpr))):
                 mean_tpr += np.interp(all_fpr, fpr[i], tpr[i])
-            
+
             mean_tpr /= min(n_classes, len(fpr))
-            
+
             fpr["macro"] = all_fpr
             tpr["macro"] = mean_tpr
             roc_auc["macro"] = auc(fpr["macro"], tpr["macro"])
-            
+
             return {
                 'fpr': fpr,
                 'tpr': tpr,
@@ -291,12 +294,12 @@ class SeongnamEnsembleAnalyzer:
         print(f"Original sample size: {len(X)}")
 
         X_original, X_pca, scaler, pca = self.create_ensemble_features(X)
-        
+
         y_original = y.copy()
-        
+
         # Apply balancing method
-        X_original, y, balance_method_name = self.balance_classes(X_original, y, balance_method)
-        X_pca, y_pca, _ = self.balance_classes(X_pca, y_original, balance_method)
+        X_original, y, balance_method_name = self.balance_classes(X_original, y, balance_method, verbose=True)
+        X_pca, y_pca, _ = self.balance_classes(X_pca, y_original, balance_method, verbose=False)  # 두 번째는 출력 안함
 
         # Label encoder for XGBoost
         le = LabelEncoder()
@@ -307,7 +310,7 @@ class SeongnamEnsembleAnalyzer:
             'RandomForest': RandomForestClassifier(n_estimators=100, random_state=42, max_depth=10),
             'GradientBoosting': GradientBoostingClassifier(n_estimators=100, random_state=42, max_depth=5),
         }
-        
+
         # Add XGBoost if available
         if XGBOOST_AVAILABLE:
             base_tree_models['XGBoost'] = xgb.XGBClassifier(
@@ -336,7 +339,7 @@ class SeongnamEnsembleAnalyzer:
         print(f"\n--- Step 1: Evaluating Base Models (Performance Filtering) ---")
         base_model_performance = {}
         kfold = KFold(n_splits=5, shuffle=True, random_state=42)
-        
+
         for model_name, model in base_tree_models.items():
             print(f"  Evaluating {model_name}...")
             try:
@@ -347,40 +350,40 @@ class SeongnamEnsembleAnalyzer:
                 else:
                     y_for_model = y
                     y_for_cv = y
-                
+
                 cv_scores = cross_val_score(model, X_original, y_for_cv, cv=kfold, scoring='accuracy')
                 mean_accuracy = cv_scores.mean()
                 base_model_performance[model_name] = mean_accuracy
-                
+
                 print(f"    Accuracy: {mean_accuracy:.4f} (±{cv_scores.std():.4f})")
-                
+
             except Exception as e:
                 print(f"    Error with {model_name}: {str(e)}")
                 base_model_performance[model_name] = 0.0
-        
+
         # Step 2: Filter models with performance >= 0.5
         qualified_models = {name: perf for name, perf in base_model_performance.items() if perf >= 0.5}
         excluded_models = {name: perf for name, perf in base_model_performance.items() if perf < 0.5}
-        
+
         print(f"\n--- Step 2: Performance Filtering Results ---")
         print(f"✅ Qualified models (Accuracy >= 0.5):")
         for name, perf in qualified_models.items():
             print(f"   - {name}: {perf:.4f}")
-        
+
         if excluded_models:
             print(f"❌ Excluded models (Accuracy < 0.5):")
             for name, perf in excluded_models.items():
                 print(f"   - {name}: {perf:.4f}")
-        
+
         # Step 3: Create voting ensemble only with qualified tree models
         voting_components = []
         final_tree_models = {}
-        
+
         for model_name in ['RandomForest', 'GradientBoosting', 'XGBoost']:
             if model_name in qualified_models and model_name in base_tree_models:
                 final_tree_models[model_name] = base_tree_models[model_name]
                 voting_components.append((model_name.lower()[:3], base_tree_models[model_name]))
-        
+
         # Add some diversity with other models (also filtered)
         for model_name, model in other_base_models.items():
             try:
@@ -391,7 +394,7 @@ class SeongnamEnsembleAnalyzer:
                     print(f"   + Added {model_name} to ensemble: {mean_accuracy:.4f}")
             except:
                 pass
-        
+
         # Create final ensemble only if we have qualified models
         voting_ensemble = {}
         if len(voting_components) >= 2:
@@ -408,7 +411,7 @@ class SeongnamEnsembleAnalyzer:
         # Combine all models in logical order: Tree models → Other models → Final ensemble
         all_models = {}
         all_models.update(final_tree_models)  # Only qualified tree models
-        
+
         # Add qualified other models
         for model_name, model in other_base_models.items():
             try:
@@ -417,7 +420,7 @@ class SeongnamEnsembleAnalyzer:
                     all_models[model_name] = model
             except:
                 pass
-                
+
         all_models.update(voting_ensemble)  # Final ensemble last
 
         results = {
@@ -438,7 +441,7 @@ class SeongnamEnsembleAnalyzer:
 
         print(f"\n--- Original Features Ensemble Analysis ---")
         print(f"Models to analyze: {list(all_models.keys())}")
-        
+
         for model_name, model in all_models.items():
             print(f"  Analyzing {model_name}...")
 
@@ -454,14 +457,14 @@ class SeongnamEnsembleAnalyzer:
                 else:
                     y_for_model = y
                     y_for_cv = y
-                
+
                 cv_scores = cross_val_score(model, X_original, y_for_cv, cv=kfold, scoring='accuracy')
                 y_pred_cv = cross_val_predict(model, X_original, y_for_cv, cv=kfold)
-                
+
                 # XGBoost 결과를 원래 라벨로 변환
                 if model_name == 'XGBoost' and XGBOOST_AVAILABLE:
                     y_pred_cv = le.inverse_transform(y_pred_cv)
-                
+
                 y_pred_proba_cv = None
                 if hasattr(model, 'predict_proba'):
                     try:
@@ -470,7 +473,7 @@ class SeongnamEnsembleAnalyzer:
                         print(f"    Warning: Could not get probability predictions for {model_name}: {str(e)}")
 
                 detailed_metrics = self.calculate_detailed_metrics(y, y_pred_cv, y_pred_proba_cv)
-                
+
                 # 모델 피팅
                 model.fit(X_original, y_for_model)
 
@@ -518,14 +521,14 @@ class SeongnamEnsembleAnalyzer:
                 else:
                     y_pca_for_model = y_pca
                     y_pca_for_cv = y_pca
-                
+
                 cv_scores = cross_val_score(model, X_pca, y_pca_for_cv, cv=kfold, scoring='accuracy')
                 y_pred_cv = cross_val_predict(model, X_pca, y_pca_for_cv, cv=kfold)
-                
+
                 # XGBoost 결과를 원래 라벨로 변환
                 if model_name == 'XGBoost' and XGBOOST_AVAILABLE:
                     y_pred_cv = le.inverse_transform(y_pred_cv)
-                
+
                 y_pred_proba_cv = None
                 if hasattr(model, 'predict_proba'):
                     try:
@@ -534,7 +537,7 @@ class SeongnamEnsembleAnalyzer:
                         print(f"    Warning: Could not get probability predictions for {model_name}: {str(e)}")
 
                 detailed_metrics = self.calculate_detailed_metrics(y_pca, y_pred_cv, y_pred_proba_cv)
-                
+
                 # 모델 피팅 (새로운 인스턴스 생성)
                 if model_name == 'XGBoost' and XGBOOST_AVAILABLE:
                     pca_model = xgb.XGBClassifier(
@@ -583,9 +586,8 @@ class SeongnamEnsembleAnalyzer:
         return results
 
     def plot_individual_model_metrics(self, save_dir, balance_method):
-        """Plot individual model metrics for each period and model including XGBoost"""
+        """Plot individual model metrics for each period and model - Original and PCA separated"""
         periods = ['Before Redevelopment', 'After Redevelopment']
-        # 논리적 순서: Tree models → Other models → Final ensemble
         models = ['RandomForest', 'GradientBoosting']
         if XGBOOST_AVAILABLE:
             models.append('XGBoost')
@@ -595,159 +597,234 @@ class SeongnamEnsembleAnalyzer:
             period_key = f"{period}_{balance_method}"
             if period_key not in self.results:
                 continue
-                
-            # Original Features - 동적으로 subplot 수 조정
+
+            # ===== 1️⃣ Original Features 차트 =====
             available_models = [m for m in models if m in self.results[period_key]['original_results']]
-            n_models = len(available_models)
-            
-            if n_models == 0:
-                continue
-                
-            # 모델이 많으면 2행으로 배치
-            if n_models <= 4:
-                rows, cols = 1, n_models
-                figsize = (7*n_models, 8)
-            else:
-                rows, cols = 2, (n_models + 1) // 2
-                figsize = (7*cols, 8*rows)
-                
-            fig, axes = plt.subplots(rows, cols, figsize=figsize)
-            if n_models == 1:
-                axes = [axes]
-            elif rows == 2:
-                axes = axes.flatten()
-            
-            for i, model in enumerate(available_models):
-                ax = axes[i]
-                metrics = self.results[period_key]['original_results'][model]['detailed_metrics']
-                
-                metric_names = ['Accuracy', 'Precision\n(Macro)', 'Recall\n(Macro)', 'F1-Score\n(Macro)']
-                metric_values = [
-                    metrics['accuracy'],
-                    metrics['precision_macro'],
-                    metrics['recall_macro'],
-                    metrics['f1_macro']
-                ]
-                
-                if metrics['roc_auc_results'] is not None:
-                    metric_names.append('AUC\n(Macro)')
-                    metric_values.append(metrics['roc_auc_results']['roc_auc']['macro'])
-                
-                # 모델 타입별 색상 구분
+            if available_models:
+                self._create_individual_chart(
+                    available_models, 
+                    self.results[period_key]['original_results'],
+                    f'{save_dir}/individual_model_metrics_ORIGINAL_{period.replace(" ", "_")}_{balance_method}.png',
+                    f'Original Features - {period}',
+                    self.results[period_key]['balance_method_name'],
+                    'steelblue'  # Original Features는 파란색 계열
+                )
+
+            # ===== 2️⃣ PCA Components 차트 =====  
+            available_models = [m for m in models if m in self.results[period_key]['pca_results']]
+            if available_models:
+                self._create_individual_chart(
+                available_models,
+                self.results[period_key]['pca_results'], 
+                f'{save_dir}/individual_model_metrics_PCA_{period.replace(" ", "_")}_{balance_method}.png',
+                f'PCA Components - {period}',
+                self.results[period_key]['balance_method_name'],
+                'darkorange'  # PCA Components는 주황색 계열
+            )
+
+    def _create_individual_chart(self, available_models, results, save_path, title, balance_method_name, base_color):
+        """Helper function to create individual model metrics chart"""
+        n_models = len(available_models)
+    
+        if n_models == 0:
+            return
+        
+        # 모델이 많으면 2행으로 배치
+        if n_models <= 4:
+            rows, cols = 1, n_models
+            figsize = (7*n_models, 8)
+        else:
+            rows, cols = 2, (n_models + 1) // 2
+            figsize = (7*cols, 8*rows)
+
+        fig, axes = plt.subplots(rows, cols, figsize=figsize)
+        if n_models == 1:
+            axes = [axes]
+        elif rows == 2:
+            axes = axes.flatten()
+
+        for i, model in enumerate(available_models):
+            ax = axes[i]
+            metrics = results[model]['detailed_metrics']
+
+            metric_names = ['Accuracy', 'Precision\n(Macro)', 'Recall\n(Macro)', 'F1-Score\n(Macro)']
+            metric_values = [
+                metrics['accuracy'],
+                metrics['precision_macro'],
+                metrics['recall_macro'],
+                metrics['f1_macro']
+            ]
+
+            if metrics['roc_auc_results'] is not None:
+                metric_names.append('AUC\n(Macro)')
+                metric_values.append(metrics['roc_auc_results']['roc_auc']['macro'])
+
+            # 색상 설정 - base_color 기반으로 통일감 있게
+            if base_color == 'steelblue':  # Original Features
                 if model in ['RandomForest', 'GradientBoosting', 'XGBoost']:
-                    colors = ['darkblue', 'darkred', 'darkgreen', 'orange', 'purple'][:len(metric_values)]
+                    colors = ['darkblue', 'navy', 'mediumblue', 'royalblue', 'steelblue'][:len(metric_values)]
                 elif model == 'VotingEnsemble':
                     colors = ['gold', 'gold', 'gold', 'gold', 'gold'][:len(metric_values)]
                 else:
-                    colors = ['lightblue', 'lightcoral', 'lightgreen', 'lightsalmon', 'plum'][:len(metric_values)]
-                
-                bars = ax.bar(metric_names, metric_values, color=colors, alpha=0.7, edgecolor='black', linewidth=0.5)
-                
-                # 값 표시 - 위치 조정
-                for bar, val in zip(bars, metric_values):
-                    height = bar.get_height()
-                    ax.text(bar.get_x() + bar.get_width()/2., height + 0.01,
-                           f'{val:.3f}', ha='center', va='bottom', fontweight='bold', fontsize=9)
-                
-                # 모델 타입 표시
+                    colors = ['lightblue', 'lightsteelblue', 'powderblue', 'lightcyan', 'aliceblue'][:len(metric_values)]
+            else:  # PCA Components (darkorange)
                 if model in ['RandomForest', 'GradientBoosting', 'XGBoost']:
-                    model_type = "Tree Model"
+                    colors = ['darkorange', 'orangered', 'chocolate', 'coral', 'orange'][:len(metric_values)]
                 elif model == 'VotingEnsemble':
-                    model_type = "Final Ensemble"
+                    colors = ['gold', 'gold', 'gold', 'gold', 'gold'][:len(metric_values)]
                 else:
-                    model_type = "Base Model"
-                
-                ax.set_title(f'{model_type}: {model}', fontsize=12, fontweight='bold', pad=15)
-                ax.set_ylabel('Metric Values', fontsize=11)
-                ax.set_ylim(0, 1.1)
-                ax.grid(True, alpha=0.3)
-                ax.tick_params(axis='x', rotation=0, labelsize=9)
-                ax.tick_params(axis='y', labelsize=9)
-                
-                balance_method_name = self.results[period_key]['balance_method_name']
-                ax.text(0.02, 0.98, f'Method: {balance_method_name}', 
-                       transform=ax.transAxes, fontsize=9,
-                       bbox=dict(boxstyle='round', facecolor='lightyellow', alpha=0.8),
-                       verticalalignment='top')
-            
-            # 빈 subplot 숨기기
-            if n_models < len(axes):
-                for j in range(n_models, len(axes)):
-                    axes[j].set_visible(False)
-            
-            plt.tight_layout(pad=3.0)
-            plt.savefig(f'{save_dir}/individual_model_metrics_{period.replace(" ", "_")}_{balance_method}.png', 
-                       dpi=300, bbox_inches='tight')
-            plt.close()
+                    colors = ['lightsalmon', 'peachpuff', 'moccasin', 'papayawhip', 'bisque'][:len(metric_values)]
+
+            bars = ax.bar(metric_names, metric_values, color=colors, alpha=0.8, edgecolor='black', linewidth=0.5)
+
+            # 값 표시
+            for bar, val in zip(bars, metric_values):
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height + 0.01,
+                       f'{val:.3f}', ha='center', va='bottom', fontweight='bold', fontsize=9)
+
+            # 모델 타입 표시
+            if model in ['RandomForest', 'GradientBoosting', 'XGBoost']:
+                model_type = "Tree Model"
+            elif model == 'VotingEnsemble':
+                model_type = "Final Ensemble"
+            else:
+                model_type = "Base Model"
+
+            ax.set_title(f'{model_type}: {model}', fontsize=12, fontweight='bold', pad=15)
+            ax.set_ylabel('Metric Values', fontsize=11)
+            ax.set_ylim(0, 1.1)
+            ax.grid(True, alpha=0.3)
+            ax.tick_params(axis='x', rotation=0, labelsize=9)
+            ax.tick_params(axis='y', labelsize=9)
+
+            # 배경색 구분
+            bg_color = 'lightblue' if base_color == 'steelblue' else 'lightyellow'
+            ax.text(0.02, 0.98, f'Method: {balance_method_name}',
+                   transform=ax.transAxes, fontsize=9,
+                   bbox=dict(boxstyle='round', facecolor=bg_color, alpha=0.8),
+                   verticalalignment='top')
+
+        # 빈 subplot 숨기기
+        if n_models < len(axes):
+            for j in range(n_models, len(axes)):
+                axes[j].set_visible(False)
+
+        # 제목에 피처 타입 표시
+        feature_type = "Original Features" if base_color == 'steelblue' else "PCA Components"
+        fig.suptitle(f'{title} ({feature_type})', fontsize=16, fontweight='bold', y=0.98)
+    
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.close()
 
     def plot_roc_comparison_across_periods(self, save_dir, balance_method):
-        """Plot ROC comparison across different periods for all models including XGBoost"""
-        # 논리적 순서: Tree models → Final ensemble
+        """Plot ROC comparison across different periods - Original and PCA separated"""
         tree_models = ['RandomForest', 'GradientBoosting']
         if XGBOOST_AVAILABLE:
             tree_models.append('XGBoost')
         ensemble_models = ['VotingEnsemble']
-        
+    
         periods = ['Before Redevelopment', 'After Redevelopment']
-        
-        # Tree models + Final ensemble만 ROC 비교
         models_to_plot = tree_models + ensemble_models
-        
-        # 동적으로 subplot 수 조정
+
+        # ===== 1️⃣ Original Features ROC =====
+        self._create_roc_comparison_chart(
+            models_to_plot, 
+            'original_results', 
+            periods, 
+            balance_method,
+            f'{save_dir}/roc_comparison_ORIGINAL_{balance_method}.png',
+            'Original Features ROC Comparison',
+            ['steelblue', 'darkblue']  # Original은 파란색 계열
+        )
+    
+        # ===== 2️⃣ PCA Components ROC =====
+        self._create_roc_comparison_chart(
+            models_to_plot,
+            'pca_results',
+            periods, 
+            balance_method,
+            f'{save_dir}/roc_comparison_PCA_{balance_method}.png',
+            'PCA Components ROC Comparison', 
+            ['darkorange', 'orangered']  # PCA는 주황색 계열
+        )
+    
+        # ===== 3️⃣ Combined ROC (기존 유지) =====
+        self._create_roc_comparison_chart(
+            models_to_plot,
+            'original_results',  # 기존처럼 Original만 사용
+            periods,
+            balance_method, 
+            f'{save_dir}/roc_comparison_{balance_method}.png',
+            'ROC Comparison (Original Features)',
+            ['blue', 'red']  # 기존 색상 유지
+        )
+
+    def _create_roc_comparison_chart(self, models_to_plot, result_type, periods, balance_method, save_path, title, colors):
+        """Helper function to create ROC comparison chart"""
+        # 사용 가능한 모델 확인
         available_models = []
         for model in models_to_plot:
-            if any(f"{period}_{balance_method}" in self.results and 
-                   model in self.results[f"{period}_{balance_method}"]['original_results'] and
-                   self.results[f"{period}_{balance_method}"]['original_results'][model]['detailed_metrics']['roc_auc_results'] is not None
+            if any(f"{period}_{balance_method}" in self.results and
+                   model in self.results[f"{period}_{balance_method}"][result_type] and
+                   self.results[f"{period}_{balance_method}"][result_type][model]['detailed_metrics']['roc_auc_results'] is not None
                    for period in periods):
                 available_models.append(model)
-        
+
         n_models = len(available_models)
         if n_models == 0:
-            print(f"No models with ROC data available for {balance_method}")
+            print(f"No models with ROC data available for {result_type} in {balance_method}")
             return
-            
+
+        # 차트 생성
         fig, axes = plt.subplots(1, n_models, figsize=(7*n_models, 6))
         if n_models == 1:
             axes = [axes]
-        
+
         for i, model in enumerate(available_models):
             ax = axes[i]
-            colors = ['blue', 'red']
             linestyles = ['-', '--']
-            
+
             for j, (period, color, linestyle) in enumerate(zip(periods, colors, linestyles)):
                 period_key = f"{period}_{balance_method}"
-                
-                if (period_key in self.results and 
-                    model in self.results[period_key]['original_results'] and
-                    self.results[period_key]['original_results'][model]['detailed_metrics']['roc_auc_results'] is not None):
-                    
-                    roc_results = self.results[period_key]['original_results'][model]['detailed_metrics']['roc_auc_results']
-                    
-                    ax.plot(roc_results['fpr']['macro'], roc_results['tpr']['macro'], 
+
+                if (period_key in self.results and
+                    model in self.results[period_key][result_type] and
+                    self.results[period_key][result_type][model]['detailed_metrics']['roc_auc_results'] is not None):
+
+                    roc_results = self.results[period_key][result_type][model]['detailed_metrics']['roc_auc_results']
+
+                    ax.plot(roc_results['fpr']['macro'], roc_results['tpr']['macro'],
                            color=color, lw=2, linestyle=linestyle,
                            label=f'{period} (AUC = {roc_results["roc_auc"]["macro"]:.3f})')
-            
+
+            # 대각선 (랜덤 분류선)
             ax.plot([0, 1], [0, 1], 'k--', lw=1, alpha=0.5)
             ax.set_xlim([0.0, 1.0])
             ax.set_ylim([0.0, 1.05])
             ax.set_xlabel('False Positive Rate', fontsize=11)
             ax.set_ylabel('True Positive Rate', fontsize=11)
-            
+
             # 모델 타입별 제목
+            tree_models = ['RandomForest', 'GradientBoosting']
+            if XGBOOST_AVAILABLE:
+                tree_models.append('XGBoost')
+            
             if model in tree_models:
                 model_type = "Tree Model"
             else:
                 model_type = "Final Ensemble"
-            
-            ax.set_title(f'{model_type}: {model}\nROC Comparison', fontsize=12, fontweight='bold')
+
+            ax.set_title(f'{model_type}: {model}', fontsize=12, fontweight='bold')
             ax.legend(loc="lower right", fontsize=10)
             ax.grid(True, alpha=0.3)
             ax.tick_params(axis='both', labelsize=9)
-        
-        plt.tight_layout(pad=3.0)
-        plt.savefig(f'{save_dir}/roc_comparison_{balance_method}.png', dpi=300, bbox_inches='tight')
+
+        # 전체 제목
+        fig.suptitle(title, fontsize=16, fontweight='bold', y=0.98)
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
         plt.close()
 
     def plot_detailed_confusion_matrices(self, save_dir, balance_method):
@@ -761,21 +838,21 @@ class SeongnamEnsembleAnalyzer:
             period_key = f"{period}_{balance_method}"
             if period_key not in self.results:
                 continue
-                
+
             # 동적으로 사용 가능한 모델 확인
             available_models = [m for m in models if m in self.results[period_key]['original_results']]
             n_models = len(available_models)
-            
+
             if n_models == 0:
                 continue
-            
+
             # 더 큰 그래프 크기로 설정 (각 모델당 2개 subplot)
             fig, axes = plt.subplots(2, n_models*2, figsize=(8*n_models, 14))
             if n_models == 1:
                 axes = axes.reshape(2, 2)
-            
+
             col_idx = 0
-            
+
             # Original Features
             for j, model in enumerate(available_models):
                 if model in self.results[period_key]['original_results']:
@@ -788,26 +865,26 @@ class SeongnamEnsembleAnalyzer:
                                xticklabels=['Low', 'Medium', 'High'],
                                yticklabels=['Low', 'Medium', 'High'],
                                annot_kws={'fontsize': 11})
-                    ax_cm.set_title(f'{model} (Original)\nConfusion Matrix', 
+                    ax_cm.set_title(f'{model} (Original)\nConfusion Matrix',
                                    fontsize=12, fontweight='bold', pad=15)
                     ax_cm.set_xlabel('Predicted', fontsize=11)
                     ax_cm.set_ylabel('Actual', fontsize=11)
                     ax_cm.tick_params(axis='both', which='major', labelsize=10)
-                    
+
                     # Per-class metrics
                     ax_metrics = axes[0, col_idx + 1]
                     classes = ['Low', 'Medium', 'High']
                     precision_vals = metrics['precision_per_class']
                     recall_vals = metrics['recall_per_class']
                     f1_vals = metrics['f1_per_class']
-                    
+
                     x = np.arange(len(classes))
                     width = 0.25
-                    
+
                     bars1 = ax_metrics.bar(x - width, precision_vals, width, label='Precision', alpha=0.8, color='skyblue')
                     bars2 = ax_metrics.bar(x, recall_vals, width, label='Recall', alpha=0.8, color='lightcoral')
                     bars3 = ax_metrics.bar(x + width, f1_vals, width, label='F1-Score', alpha=0.8, color='lightgreen')
-                    
+
                     # 막대 위에 값 표시
                     for bars in [bars1, bars2, bars3]:
                         for bar in bars:
@@ -815,10 +892,10 @@ class SeongnamEnsembleAnalyzer:
                             if height > 0:  # 0이 아닌 경우만 표시
                                 ax_metrics.text(bar.get_x() + bar.get_width()/2., height + 0.01,
                                               f'{height:.2f}', ha='center', va='bottom', fontsize=9)
-                    
+
                     ax_metrics.set_xlabel('Classes', fontsize=11)
                     ax_metrics.set_ylabel('Score', fontsize=11)
-                    ax_metrics.set_title(f'{model} (Original)\nPer-Class Metrics', 
+                    ax_metrics.set_title(f'{model} (Original)\nPer-Class Metrics',
                                        fontsize=12, fontweight='bold', pad=15)
                     ax_metrics.set_xticks(x)
                     ax_metrics.set_xticklabels(classes, fontsize=10)
@@ -826,11 +903,11 @@ class SeongnamEnsembleAnalyzer:
                     ax_metrics.set_ylim(0, 1.1)
                     ax_metrics.grid(True, alpha=0.3)
                     ax_metrics.tick_params(axis='both', which='major', labelsize=9)
-                    
+
                     col_idx += 2
 
             col_idx = 0
-            
+
             # PCA Components
             for j, model in enumerate(available_models):
                 if model in self.results[period_key]['pca_results']:
@@ -843,26 +920,26 @@ class SeongnamEnsembleAnalyzer:
                                xticklabels=['Low', 'Medium', 'High'],
                                yticklabels=['Low', 'Medium', 'High'],
                                annot_kws={'fontsize': 11})
-                    ax_cm.set_title(f'{model} (PCA)\nConfusion Matrix', 
+                    ax_cm.set_title(f'{model} (PCA)\nConfusion Matrix',
                                    fontsize=12, fontweight='bold', pad=15)
                     ax_cm.set_xlabel('Predicted', fontsize=11)
                     ax_cm.set_ylabel('Actual', fontsize=11)
                     ax_cm.tick_params(axis='both', which='major', labelsize=10)
-                    
+
                     # Per-class metrics
                     ax_metrics = axes[1, col_idx + 1]
                     classes = ['Low', 'Medium', 'High']
                     precision_vals = metrics['precision_per_class']
                     recall_vals = metrics['recall_per_class']
                     f1_vals = metrics['f1_per_class']
-                    
+
                     x = np.arange(len(classes))
                     width = 0.25
-                    
+
                     bars1 = ax_metrics.bar(x - width, precision_vals, width, label='Precision', alpha=0.8, color='lightblue')
                     bars2 = ax_metrics.bar(x, recall_vals, width, label='Recall', alpha=0.8, color='lightpink')
                     bars3 = ax_metrics.bar(x + width, f1_vals, width, label='F1-Score', alpha=0.8, color='lightseagreen')
-                    
+
                     # 막대 위에 값 표시
                     for bars in [bars1, bars2, bars3]:
                         for bar in bars:
@@ -870,10 +947,10 @@ class SeongnamEnsembleAnalyzer:
                             if height > 0:  # 0이 아닌 경우만 표시
                                 ax_metrics.text(bar.get_x() + bar.get_width()/2., height + 0.01,
                                               f'{height:.2f}', ha='center', va='bottom', fontsize=9)
-                    
+
                     ax_metrics.set_xlabel('Classes', fontsize=11)
                     ax_metrics.set_ylabel('Score', fontsize=11)
-                    ax_metrics.set_title(f'{model} (PCA)\nPer-Class Metrics', 
+                    ax_metrics.set_title(f'{model} (PCA)\nPer-Class Metrics',
                                        fontsize=12, fontweight='bold', pad=15)
                     ax_metrics.set_xticks(x)
                     ax_metrics.set_xticklabels(classes, fontsize=10)
@@ -881,18 +958,18 @@ class SeongnamEnsembleAnalyzer:
                     ax_metrics.set_ylim(0, 1.1)
                     ax_metrics.grid(True, alpha=0.3)
                     ax_metrics.tick_params(axis='both', which='major', labelsize=9)
-                    
+
                     col_idx += 2
 
             balance_method_name = self.results[period_key]['balance_method_name']
-            fig.suptitle(f'{period} - Model Performance\n({balance_method_name})', 
+            fig.suptitle(f'{period} - Model Performance\n({balance_method_name})',
                         fontsize=16, fontweight='bold', y=0.98)
-            
+
             # 여백 조정
             plt.tight_layout(rect=[0, 0.03, 1, 0.95])
             plt.subplots_adjust(hspace=0.3, wspace=0.25)
-            
-            plt.savefig(f'{save_dir}/confusion_matrices_{period.replace(" ", "_")}_{balance_method}.png', 
+
+            plt.savefig(f'{save_dir}/confusion_matrices_{period.replace(" ", "_")}_{balance_method}.png',
                        dpi=300, bbox_inches='tight', facecolor='white')
             plt.close()
 
@@ -900,7 +977,7 @@ class SeongnamEnsembleAnalyzer:
         """Plot feature importance for ensemble models including XGBoost"""
         periods = ['Before Redevelopment', 'After Redevelopment']
         period_keys = [f"{period}_{balance_method}" for period in periods]
-        
+
         if not all(key in self.results for key in period_keys):
             return
 
@@ -926,7 +1003,7 @@ class SeongnamEnsembleAnalyzer:
         # Filter available models
         available_models = []
         for model_name in models_with_importance:
-            if (model_name in self.results[before_key]['original_results'] and 
+            if (model_name in self.results[before_key]['original_results'] and
                 model_name in self.results[after_key]['original_results'] and
                 self.results[before_key]['original_results'][model_name]['feature_importance'] is not None and
                 self.results[after_key]['original_results'][model_name]['feature_importance'] is not None):
@@ -980,10 +1057,10 @@ class SeongnamEnsembleAnalyzer:
                 # 값 표시
                 for i, (before_val, after_val) in enumerate(zip(importance_df['before'], importance_df['after'])):
                     if before_val > 0:
-                        ax1.text(i - width/2, before_val + 0.005, f'{before_val:.3f}', 
+                        ax1.text(i - width/2, before_val + 0.005, f'{before_val:.3f}',
                                 ha='center', va='bottom', fontsize=8)
                     if after_val > 0:
-                        ax1.text(i + width/2, after_val + 0.005, f'{after_val:.3f}', 
+                        ax1.text(i + width/2, after_val + 0.005, f'{after_val:.3f}',
                                 ha='center', va='bottom', fontsize=8)
 
                 colors = ['red' if x < 0 else 'blue' for x in importance_df['change']]
@@ -1026,29 +1103,29 @@ class SeongnamEnsembleAnalyzer:
 
         for balance_method in balance_methods:
             print(f"\nCreating visualizations for {balance_method.upper()} method...")
-            
+
             # Create method-specific subdirectory
             method_dir = f"{save_dir}/{balance_method}"
             os.makedirs(method_dir, exist_ok=True)
-            
+
             try:
                 self.plot_individual_model_metrics(method_dir, balance_method)
                 print(f"  ✅ Individual model metrics plotted")
             except Exception as e:
                 print(f"  ❌ Error plotting individual metrics: {str(e)}")
-            
+
             try:
                 self.plot_roc_comparison_across_periods(method_dir, balance_method)
                 print(f"  ✅ ROC comparison plotted")
             except Exception as e:
                 print(f"  ❌ Error plotting ROC comparison: {str(e)}")
-            
+
             try:
                 self.plot_detailed_confusion_matrices(method_dir, balance_method)
                 print(f"  ✅ Confusion matrices plotted")
             except Exception as e:
                 print(f"  ❌ Error plotting confusion matrices: {str(e)}")
-            
+
             try:
                 self.plot_ensemble_feature_importance(method_dir, balance_method)
                 print(f"  ✅ Feature importance plotted")
@@ -1057,13 +1134,12 @@ class SeongnamEnsembleAnalyzer:
 
         print(f"\nAll ensemble visualizations saved to {save_dir} folder!")
 
-
 def print_ensemble_results(analyzer):
     """Print detailed results for ensemble analysis comparing Original vs SMOTE"""
     print(f"\n{'='*100}")
     print(f"DETAILED ENSEMBLE ANALYSIS RESULTS: ORIGINAL vs SMOTE COMPARISON")
     print(f"{'='*100}")
-    
+
     # Group results by balance method
     balance_methods = {}
     for key, result in analyzer.results.items():
@@ -1077,22 +1153,22 @@ def print_ensemble_results(analyzer):
     if XGBOOST_AVAILABLE:
         models.extend(['XGBoost'])
     models.extend(['LogisticRegression', 'KNeighbors', 'DecisionTree', 'VotingEnsemble'])
-    
+
     method_names = {
         'none': 'ORIGINAL DISTRIBUTION',
         'smote': 'SMOTE BALANCED'
     }
-    
+
     for method_name, method_results in balance_methods.items():
         display_name = method_names.get(method_name, method_name.upper())
         print(f"\n{'='*100}")
         print(f"RESULTS FOR {display_name}")
         print(f"{'='*100}")
-        
+
         for period, result in method_results.items():
             print(f"\n📊 {period}")
             print("=" * 90)
-            
+
             data_info = result['data_info']
             balance_method_name = result['balance_method_name']
             print(f"📋 Data Information:")
@@ -1102,41 +1178,41 @@ def print_ensemble_results(analyzer):
             print(f"  Original Features: {data_info['n_features_original']}")
             print(f"  PCA Components: {data_info['n_features_pca']} (explained variance: {data_info['pca_variance_explained']:.3f})")
             print(f"  XGBoost Available: {'✅ Yes' if data_info['xgboost_available'] else '❌ No'}")
-            
+
             print(f"\n🔍 Original Features Performance:")
             print(f"{'Model':<20} {'Accuracy':<10} {'CV Acc':<10} {'Precision':<10} {'Recall':<10} {'F1-Score':<10} {'AUC':<10}")
             print("-" * 90)
-            
+
             for model in models:
                 if model in result['original_results']:
                     metrics = result['original_results'][model]['detailed_metrics']
                     cv_scores = result['original_results'][model]['cv_scores']
-                    
+
                     auc_score = "N/A"
                     if metrics['roc_auc_results'] is not None:
                         auc_score = f"{metrics['roc_auc_results']['roc_auc']['macro']:.3f}"
-                    
+
                     print(f"{model:<20} {metrics['accuracy']:<10.3f} {cv_scores.mean():<10.3f} "
                           f"{metrics['precision_macro']:<10.3f} {metrics['recall_macro']:<10.3f} "
                           f"{metrics['f1_macro']:<10.3f} {auc_score:<10}")
-            
+
             print(f"\n🔍 PCA Components Performance:")
             print(f"{'Model':<20} {'Accuracy':<10} {'CV Acc':<10} {'Precision':<10} {'Recall':<10} {'F1-Score':<10} {'AUC':<10}")
             print("-" * 90)
-            
+
             for model in models:
                 if model in result['pca_results']:
                     metrics = result['pca_results'][model]['detailed_metrics']
                     cv_scores = result['pca_results'][model]['cv_scores']
-                    
+
                     auc_score = "N/A"
                     if metrics['roc_auc_results'] is not None:
                         auc_score = f"{metrics['roc_auc_results']['roc_auc']['macro']:.3f}"
-                    
+
                     print(f"{model:<20} {metrics['accuracy']:<10.3f} {cv_scores.mean():<10.3f} "
                           f"{metrics['precision_macro']:<10.3f} {metrics['recall_macro']:<10.3f} "
                           f"{metrics['f1_macro']:<10.3f} {auc_score:<10}")
-            
+
             # Best performing model summary
             best_model = None
             best_accuracy = 0
@@ -1146,18 +1222,18 @@ def print_ensemble_results(analyzer):
                     if acc > best_accuracy:
                         best_accuracy = acc
                         best_model = model
-            
+
             if best_model:
                 print(f"\n🏆 Best Performing Model: {best_model} (Accuracy: {best_accuracy:.3f})")
-                
+
                 # Show per-class metrics for best model
                 best_metrics = result['original_results'][best_model]['detailed_metrics']
                 classes = ['Low', 'Medium', 'High']
-                
+
                 print(f"\n📈 {best_model} Per-Class Metrics (Original Features):")
                 print(f"{'Class':<15} {'Precision':<10} {'Recall':<10} {'F1-Score':<10} {'Support':<8}")
                 print("-" * 55)
-                
+
                 for i, cls in enumerate(classes):
                     print(f"{cls:<15} {best_metrics['precision_per_class'][i]:<10.3f} "
                           f"{best_metrics['recall_per_class'][i]:<10.3f} {best_metrics['f1_per_class'][i]:<10.3f} "
@@ -1168,27 +1244,27 @@ def print_ensemble_results(analyzer):
         if len(periods) >= 2:
             print(f"\n🎯 Feature Importance Comparison ({display_name}):")
             print("-" * 90)
-            
+
             before_period = 'Before Redevelopment'
             after_period = 'After Redevelopment'
-            
+
             if before_period in method_results and after_period in method_results:
                 # Show comparison for all models with feature importance
                 feature_models = ['RandomForest', 'GradientBoosting']
                 if XGBOOST_AVAILABLE:
                     feature_models.append('XGBoost')
-                
+
                 for model_name in feature_models:
-                    if (model_name in method_results[before_period]['original_results'] and 
+                    if (model_name in method_results[before_period]['original_results'] and
                         model_name in method_results[after_period]['original_results']):
-                        
+
                         before_importance = method_results[before_period]['original_results'][model_name]['feature_importance']
                         after_importance = method_results[after_period]['original_results'][model_name]['feature_importance']
-                        
+
                         if before_importance is not None and after_importance is not None:
                             print(f"\n📊 {model_name} Feature Importance:")
                             feature_names = method_results[before_period]['feature_names']
-                            
+
                             feature_mapping = {
                                 '만나이': 'Age',
                                 '지역거주기간': 'Residence_Period',
@@ -1199,23 +1275,23 @@ def print_ensemble_results(analyzer):
                                 '부채유무': 'Debt_Free',
                                 '삶의만족도': 'Life_Satisfaction_Pos'
                             }
-                            
+
                             print(f"{'Feature':<25} {'Before':<10} {'After':<10} {'Change':<10} {'Status':<12}")
                             print("-" * 75)
-                            
+
                             for i, feature in enumerate(feature_names):
                                 eng_name = feature_mapping.get(feature, feature)
                                 before_val = before_importance[i] if i < len(before_importance) else 0
                                 after_val = after_importance[i] if i < len(after_importance) else 0
                                 change = after_val - before_val
-                                
+
                                 if abs(change) < 0.01:
                                     status = "Stable"
                                 elif change > 0:
                                     status = "↗️ Increased"
                                 else:
                                     status = "↘️ Decreased"
-                                
+
                                 print(f"{eng_name:<25} {before_val:<10.3f} {after_val:<10.3f} {change:>+10.3f} {status:<12}")
 
     print(f"\n{'='*100}")
@@ -1228,15 +1304,15 @@ def print_ensemble_results(analyzer):
     print(f"🎯 Performance filtering ensures only reliable models (Accuracy >= 0.5) in ensemble")
     print(f"{'='*100}")
 
-
 def run_complete_ensemble_analysis():
     """Run complete ensemble analysis comparing Original vs SMOTE balanced data"""
 
     print("🚀 Starting Enhanced Ensemble Analysis: Original vs SMOTE Comparison")
-    print("📁 Make sure your Google Drive is mounted!")
+    print("📁 Make sure your data files are accessible!")
 
-    before = pd.read_csv("/content/drive/MyDrive/2025-1학기 데이터과학 1조/Data/성남시 사회조사/최종 파일/redevelopment_before_2017_2019.csv")
-    after = pd.read_csv("/content/drive/MyDrive/2025-1학기 데이터과학 1조/Data/성남시 사회조사/최종 파일/redevelopment_after_2023.csv")
+    # CSV 파일 경로 수정 - 실제 파일 위치에 맞게 수정하세요
+    before = pd.read_csv("redevelopment_before_2017_2019.csv")
+    after = pd.read_csv("redevelopment_after_2023.csv")
 
     print(f"Before redevelopment (65+): {len(before)} samples")
     print(f"After redevelopment (65+): {len(after)} samples")
@@ -1253,17 +1329,17 @@ def run_complete_ensemble_analysis():
         'none': 'Original Distribution',
         'smote': 'SMOTE Balanced'
     }
-    
+
     print(f"\n=== Comparing Original vs SMOTE Balanced Data ===")
     if XGBOOST_AVAILABLE:
         print("📊 Models included: RandomForest, GradientBoosting, XGBoost, LogisticRegression, KNeighbors, DecisionTree, VotingEnsemble")
     else:
         print("📊 Models included: RandomForest, GradientBoosting, LogisticRegression, KNeighbors, DecisionTree, VotingEnsemble (XGBoost not available)")
-    
+
     for method in balance_methods:
         method_display = method_names[method]
         print(f"\n--- Testing {method_display} ---")
-        
+
         # Run analysis with specific balance method
         analyzer.run_ensemble_analysis("Before Redevelopment", before, balance_method=method, save_dir=save_dir)
         analyzer.run_ensemble_analysis("After Redevelopment", after, balance_method=method, save_dir=save_dir)
@@ -1314,10 +1390,10 @@ def run_complete_ensemble_analysis():
     print("- Automatic model availability detection")
     print("- English-only labels for clean visualization")
     print("- Error handling for robust analysis")
-    
+
     print("\n📊 Feature Interpretation Guide (All Positive Direction):")
     print("- Future_Residence_Intent_Pos: Higher = Stronger residence intention")
-    print("- Residence_Satisfaction: Higher = Higher residence satisfaction") 
+    print("- Residence_Satisfaction: Higher = Higher residence satisfaction")
     print("- Life_Satisfaction_Pos: Higher = Higher life satisfaction")
     print("- Place_Attachment: Higher = Stronger place attachment")
     print("- Settlement_Mindset: Higher = Stronger settlement mindset")
@@ -1327,11 +1403,12 @@ def run_complete_ensemble_analysis():
     print("- Age: Context dependent")
     print("\n🎯 Target Variable: Low < Medium < High (Elderly-Friendliness Grade)")
     print("- Low: Low elderly-friendliness")
-    print("- Medium: Medium elderly-friendliness") 
+    print("- Medium: Medium elderly-friendliness")
     print("- High: High elderly-friendliness")
     print("\n🔧 Performance Filtering: Only models with Accuracy >= 0.5 included in ensemble")
 
     return analyzer
 
 # 실행
-analyzer = run_complete_ensemble_analysis()
+if __name__ == "__main__":
+    analyzer = run_complete_ensemble_analysis()
