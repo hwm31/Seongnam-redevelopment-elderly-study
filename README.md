@@ -176,7 +176,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 |:-------------------|:------------------------|
 | **강은주** | 📊 PPT, 📝 Report |
 | **박현동** | 📊 PPT, 🔧 Preprocessing |
-| **손인화** | 📊 PPT, 📝 Report, 🤖 Modeling |
+| **손인화 👑** | 📊 PPT, 📝 Report, 🤖 Modeling |
 | **조우영** | 📝 Report, 🤖 Modeling |
 
 </div>
