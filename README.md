@@ -1,80 +1,181 @@
-# Data Science Team 1
-### 2025 Spring 
+# 🏘️ The Impact of Redevelopment on Older Adults
+### Case Study of Seongnam City with Policy Recommendations
+*Data Science Team 1 | 2025 Spring*
 
+<div align="center">
 
+![Project Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange?style=for-the-badge&logo=jupyter&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-# The Impact of Redevelopment on Older Adults
-Case Study of Seongnam City with Policy Recommendations
+</div>
 
-## 🏙️ Project Overview
+---
 
-This project analyzes the level of age-friendliness across cities and counties in Gyeonggi-do, with a focus on Seongnam-si, where urban redevelopment and population aging are occurring simultaneously. As Korea entered an aged society in 2017, older adults have become increasingly vulnerable, especially in redevelopment areas.
+## 🌟 Project Overview
 
-## 🔍 Key Objectives
-	•	Evaluate the age-friendliness of Seongnam-si using provincial data.
-	•	Identify key factors affecting elderly quality of life (e.g., transportation, welfare services, safety).
-	•	Use machine learning to determine the main predictors of residential satisfaction.
-	•	Propose policy recommendations to support residential stability and well-being for older adults during redevelopment.
+This comprehensive data science project analyzes the **age-friendliness** across cities and counties in **Gyeonggi-do Province**, with a special focus on **Seongnam-si**, where urban redevelopment and population aging intersect. As Korea transitioned into an aged society in 2017, older adults have become increasingly vulnerable, particularly in redevelopment zones.
 
-Seongnam-si, especially its older districts (e.g., Sujeong-gu and Jungwon-gu), illustrates the urgent need to improve age-friendliness in the face of redevelopment. This project aims to guide policy toward more inclusive, senior-friendly urban planning.
+> 📊 **Key Insight**: Seongnam-si's older districts (Sujeong-gu and Jungwon-gu) exemplify the urgent need for age-friendly urban planning during redevelopment processes.
 
-## 📁 Directory Structure
-each-city/
+---
+
+## 🎯 Research Objectives
+
+<table>
+<tr>
+<td width="50%">
+
+### 📈 **Primary Goals**
+- **Evaluate** age-friendliness metrics in Seongnam-si
+- **Identify** key factors affecting elderly quality of life
+- **Apply** machine learning for residential satisfaction prediction
+- **Propose** evidence-based policy recommendations
+
+</td>
+<td width="50%">
+
+### 🔍 **Focus Areas**
+- 🚌 Transportation accessibility
+- 🏥 Healthcare & welfare services  
+- 🛡️ Safety & security measures
+- 🏠 Housing stability during redevelopment
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📂 Project Structure
+
+```
+📁 each-city/
 │
-├── Data/
-│   ├── 성남시 연도별 인구지표/
-│   │   └── xlsx파일/
+├── 📊 Data/
+│   ├── 🗂️ 성남시 연도별 인구지표/
+│   │   └── 📋 xlsx파일/
 │   │       ├── 17년_연령별_인구.csv
+│   │       ├── 18년_연령별_인구.csv
 │   │       ├── ...
 │   │       └── 24년_연령별-인구.csv
-│   ├── redevelopment_before_2017_2019.csv
-│   └── redevelopment_after_2023.csv
+│   ├── 🏗️ redevelopment_before_2017_2019.csv
+│   └── 🆕 redevelopment_after_2023.csv
 │
-├── Modeling/
-│   ├── Classification/
+├── 🤖 Modeling/
+│   ├── 🎯 Classification/
 │   │   ├── Classification.py
 │   │   ├── log.txt
-│   │   └── seongnam_classification_results/
+│   │   └── 📈 seongnam_classification_results/
 │   │
-│   ├── Ensemble/
+│   ├── 🔄 Ensemble/
 │   │   ├── Ensemble.py
 │   │   ├── log.txt
-│   │   └── seongnam_ensemble_results/
+│   │   └── 📊 seongnam_ensemble_results/
 │   │
-│   └── Regression/
+│   └── 📉 Regression/
 │       ├── Regression.py
 │       ├── log.txt
-│       └── seongnam_regression_results/
+│       └── 📋 seongnam_regression_results/
 │
-└── Preprocessing/
+└── 🔧 Preprocessing/
     └── preprocessing.ipynb
+```
 
+---
 
-## ▶️ How to Run
-	1.	Clone the repository and install dependencies
+## 🚀 Quick Start Guide
 
+### 1️⃣ **Setup & Installation**
+```bash
+# Clone the repository
 git clone https://github.com/hwm31/Seongnam-redevelopment-elderly-study.git
+
+# Navigate to project directory
 cd Seongnam-redevelopment-elderly-study
+
+# Install required dependencies
 pip install -r requirements.txt
+```
 
-
-	2.	Data Preprocessing
-	•	Run the Jupyter notebook:
-
+### 2️⃣ **Data Preprocessing**
+```bash
+# Launch Jupyter Notebook
 jupyter notebook Preprocessing/preprocessing.ipynb
+```
+> 💡 This notebook loads raw data from `Data/`, processes it, and prepares datasets for machine learning models.
 
+### 3️⃣ **Run Machine Learning Models**
+Execute each model independently:
 
-	•	This notebook loads the raw data under Data/, processes it, and prepares it for modeling.
-
-	3.	Run Models
-	•	You can execute each model by running the respective Python files:
-
+```bash
+# Classification Model
 python Modeling/Classification/Classification.py
+
+# Ensemble Methods
 python Modeling/Ensemble/Ensemble.py
+
+# Regression Analysis
 python Modeling/Regression/Regression.py
+```
 
+> 📝 **Output**: Logs are saved in `log.txt` files, and detailed results are stored in respective `*_results/` directories.
 
-	•	Output logs are saved in each folder’s log.txt, and result files are stored in the respective *_results/ directories.
+---
 
+## 📊 Key Features
 
-## 💡 Result
+<div align="center">
+
+| Feature | Description | Status |
+|---------|-------------|--------|
+| 🗂️ **Multi-year Analysis** | Population data from 2017-2024 | ✅ Complete |
+| 🤖 **ML Pipeline** | Classification, Regression & Ensemble | ✅ Complete |
+| 📈 **Policy Insights** | Data-driven recommendations | 🔄 In Progress |
+| 🎯 **Age-Friendly Metrics** | Comprehensive evaluation framework | ✅ Complete |
+
+</div>
+
+---
+
+## 💡 Expected Outcomes
+
+This research aims to provide:
+
+- 📋 **Comprehensive assessment** of Seongnam-si's age-friendliness
+- 🎯 **Predictive models** for residential satisfaction among older adults
+- 📜 **Policy recommendations** for inclusive urban redevelopment
+- 🌉 **Framework** applicable to other aging cities in Korea
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to:
+- 🐛 Report bugs or issues
+- 💡 Suggest new features or improvements  
+- 📝 Improve documentation
+- 🔧 Submit pull requests
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👥 Team
+
+**Data Science Team 1** | 2025 Spring Semester
+
+---
+
+<div align="center">
+
+**🏙️ Building Age-Friendly Cities Through Data Science 🏙️**
+
+*Making urban redevelopment inclusive for all generations*
+
+</div>
