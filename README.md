@@ -166,6 +166,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 📁 Additional Resources
+
+<div align="center">
+
+### 🔗 **Google Drive Folder**
+[![Google Drive](https://img.shields.io/badge/Google%20Drive-Supplementary%20Materials-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/drive/folders/1YKvw7bMclbvzgSnHANjnNG7PZE-msbIo?usp=share_link)
+
+*📋 Contains additional datasets, presentations, detailed reports, and supplementary analysis materials*
+
+</div>
+
+---
+
 ## 👥 Team
 
 **Data Science Team 1** | 2025 Spring Semester
@@ -176,7 +189,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 |:-------------------|:------------------------|
 | **강은주** | 📊 PPT, 📝 Report |
 | **박현동** | 📊 PPT, 🔧 Preprocessing |
-| **손인화 👑** | 📊 PPT, 📝 Report, 🤖 Modeling |
+| **손인화** | 📊 PPT, 📝 Report, 🤖 Modeling |
 | **조우영** | 📝 Report, 🤖 Modeling |
 
 </div>
